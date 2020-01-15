@@ -1,3 +1,0 @@
-/Users/yuanyaoyao/Documents/study/test/数据结构与算法/bld/CMakeFiles/rebuild_cache.dir
-/Users/yuanyaoyao/Documents/study/test/数据结构与算法/bld/CMakeFiles/edit_cache.dir
-/Users/yuanyaoyao/Documents/study/test/数据结构与算法/bld/CMakeFiles/binarysearchtree.dir
