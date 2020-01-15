@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/arrayqueue.h
+queue.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/queue.h
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/binarysearchtree.cc
+binarysearchtree.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/binarysearchtree.h
+string
+-
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/binarysearchtree.h
+linkedbinarytree.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/linkedbinarytree.h
+bstree.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/bstree.h
+iostream
+-
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/binarytree.h
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/bstree.h
+dictionary.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/dictionary.h
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/dictionary.h
+utility
+-
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/linkedbinarytree.h
+binarytree.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/binarytree.h
+arrayqueue.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/arrayqueue.h
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/queue.h
+

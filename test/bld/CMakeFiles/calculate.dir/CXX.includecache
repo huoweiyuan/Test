@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/arrayqueue.h
+queue.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/queue.h
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/binarytree.h
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/calculate.cc
+calculate.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/calculate.h
+iostream
+-
+cstring
+-
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/calculate.h
+linkedbinarytree.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/linkedbinarytree.h
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/linkedbinarytree.h
+binarytree.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/binarytree.h
+arrayqueue.h
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/arrayqueue.h
+
+/Users/yuanyaoyao/Documents/study/test/数据结构与算法/queue.h
+
