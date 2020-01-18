@@ -7,6 +7,8 @@ public:
   virtual ~BinaryTree() {}
   virtual bool empty() const = 0;
   virtual int size() const = 0;
+  virtual int level_height() const = 0;
+  virtual void print_tree() const = 0;
   virtual void preOrder(void (*)(T&)) const = 0;
   virtual void inOrder(void (*)(T&)) const = 0;
   virtual void postOrder(void (*)(T&)) const = 0;

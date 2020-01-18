@@ -36,6 +36,8 @@ class LinkedBinaryTree : public BinaryTree<E>
  public:
   bool empty() const;
   int size()  const;
+  int level_height() const;
+  void print_tree() const;
   void preOrder(void (*)(E&)) const;
   void inOrder(void (*)(E&)) const;
   void postOrder(void (*)(E&)) const;
@@ -65,6 +67,41 @@ template<typename E>
 int LinkedBinaryTree<E>::size() const
 {
   return __size;
+}
+
+template<typename E>
+int LinkedBinaryTree<E>::level_height() const
+{
+  int height = 0;
+  ArrayQueue<tree_node_t<E>*> *level, *next_level, *tmp;
+  level = new ArrayQueue<tree_node_t<E>*>();
+  next_level = new ArrayQueue<tree_node_t<E>*>();
+  if (__root != nullptr)
+    level->push(__root);
+  while (level->empty() != true)
+  {
+    while (level->empty() != true)
+    {
+      tree_node_t<E> *tree = level->pop();
+      if (tree->left != nullptr)
+        next_level->push(tree->left);
+      if (tree->right != nullptr)
+        next_level->push(tree->right);
+    }
+    tmp = level;
+    level = next_level;
+    next_level = tmp;
+    height++;
+  }
+  delete level;
+  delete next_level;
+  return height;
+}
+
+template<typename E>
+void LinkedBinaryTree<E>::print_tree() const
+{
+  // int height = level_hegiht();
 }
 
 template<typename E>
@@ -111,7 +148,6 @@ void LinkedBinaryTree<E>::inOrder(tree_node_t<E>* tree)
 {
   if (tree != nullptr)
   {
-    
     inOrder(tree->left);
     LinkedBinaryTree<E>::__visit(tree->element);
     inOrder(tree->right);
