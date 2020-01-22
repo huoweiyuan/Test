@@ -9,7 +9,7 @@ int main()
   {
     int i:4;
   };
-	
+
   uint8_t block = 0xFF;
   block = block | (~0x1);
   std::cout << std::bitset<16>(~0x1) << " " << std::bitset<8>(block) << std::endl;
