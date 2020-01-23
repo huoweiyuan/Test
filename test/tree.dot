@@ -1,0 +1,9 @@
+digraph binaryTree{
+node[shape=circle,color=red,fontcolor=blue,fontsize=10];
+_a [group=a, label="", width=0, style=invis];
+a->_a[style=invis];
+a->b;
+b->c;
+_b [group=b, label="", width=0, style=invis];
+b->_b[style=invis]
+}
