@@ -12,6 +12,6 @@ int main()
   cout << sizeof(s) << endl;
   s.insert(1);
   cout << sizeof(s) << endl;
-  cout << sizeof(ss::a) << endl;
+  cout << sizeof(ss::a) << endl; // c++ 11
   return 0;
 }
