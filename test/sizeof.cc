@@ -13,5 +13,7 @@ int main()
   s.insert(1);
   cout << sizeof(s) << endl;
   cout << sizeof(ss::a) << endl; // c++ 11
+  int a;
+  int c = sizeof (a = a + 1);
   return 0;
 }
