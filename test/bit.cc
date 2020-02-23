@@ -35,5 +35,8 @@ int main()
   cout << bit5.to_string() << endl;
   bit5 <<= 64;
   cout << bit5.to_string() << endl;
+  cout << sizeof(unsigned long) << endl;
+  bit5 = 0xff;
+  cout << bit5.to_string() << endl;
   return 0;
 }
