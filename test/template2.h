@@ -1,0 +1,1 @@
+void out(int *i);
