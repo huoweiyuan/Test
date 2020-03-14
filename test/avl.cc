@@ -1,7 +1,14 @@
-#include "avltree.h"
+#include "avl.h"
 
+void test1()
+{
+  avl<char> a;
+  a.insert('a');
+  a.insert('b');
+  a.insert('c');
+}
 int main()
 {
-  avlTree<int, char> avl;
+  test1();
   return 0;
 }
