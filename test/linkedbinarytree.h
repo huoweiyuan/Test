@@ -52,7 +52,16 @@ class LinkedBinaryTree : public BinaryTree<E>
   static void inOrder(tree_node_t<E>*);
   static void postOrder(tree_node_t<E>*);
   static void levelOrder(tree_node_t<E>*);
+
+  template<typename T>
+  friend tree_node_t<T>* get_tree_root(const LinkedBinaryTree<T> &);
 };
+
+template<typename T>
+tree_node_t<T>* get_tree_root(const LinkedBinaryTree<T> &tree)
+{
+  return tree.__root;
+}
 
 template<typename E>
 void (*LinkedBinaryTree<E>::__visit)(E&) = nullptr;
