@@ -55,13 +55,15 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
     // 判断平衡因子
     if (HEIGHT(tree->left) - HEIGHT(tree->right) == 2)
     {
-      if (e < tree->left.element) // 小于左子树，毕进入其左子树
+      if (e < tree->left->element) // 小于左子树，毕进入其左子树
       {
         // TODO: LL旋转
+        // tree->left = left_left_rotation(tree->left);
       }
       else
       {
         // TODO: LR旋转
+        // tree->left = left_right_rotation(tree->left);
       }
     }
   }
@@ -71,7 +73,7 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
     // 判断平衡因子
     if (HEIGHT(tree->right) - HEIGHT(tree->left) == 2)
     {
-      if (e > tree->right.element) // 大于右子树，毕进入其右子树
+      if (e > tree->right->element) // 大于右子树，毕进入其右子树
       {
         // TODO: RR旋转
       }
