@@ -28,12 +28,20 @@ class avl
  private:
   struct avl_node_struct<E>* avl_insert(struct avl_node_struct<E> *tree,
                                         const E&);
+  struct avl_node_struct<E>* left_left_rotation(struct
+                                                avl_node_struct<E> *tree);
 };
 
 template<typename E>
 int avl<E>::erase(const E& e)
 {
   return 0;
+}
+
+template<typename E>
+struct avl_node_struct<E>* avl<E>::left_left_rotation(struct avl_node_struct<E> *tree)
+{
+  return nullptr;
 }
 
 #define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
@@ -58,7 +66,7 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
       if (e < tree->left->element) // 小于左子树，毕进入其左子树
       {
         // TODO: LL旋转
-        // tree->left = left_left_rotation(tree->left);
+        tree->left = left_left_rotation(tree->left);
       }
       else
       {
