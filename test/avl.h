@@ -36,6 +36,8 @@ int avl<E>::erase(const E& e)
   return 0;
 }
 
+#define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
+#define MAX(a, b) (a > b ? a : b)
 template<typename E>
 struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
                                       const E &e)
@@ -47,10 +49,43 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
     tree->element = e;
     return tree;
   }
+  else if (e < tree->element)
+  {
+    tree->left = avl_insert(tree->left, e);
+    // 判断平衡因子
+    if (HEIGHT(tree->left) - HEIGHT(tree->right) == 2)
+    {
+      if (e < tree->left.element) // 小于左子树，毕进入其左子树
+      {
+        // TODO: LL旋转
+      }
+      else
+      {
+        // TODO: LR旋转
+      }
+    }
+  }
+  else if (e > tree->element)
+  {
+    tree->right = avl_insert(tree->right, e);
+    // 判断平衡因子
+    if (HEIGHT(tree->right) - HEIGHT(tree->left) == 2)
+    {
+      if (e > tree->right.element) // 大于右子树，毕进入其右子树
+      {
+        // TODO: RR旋转
+      }
+      else
+      {
+        // TODO: RL旋转
+      }
+    }
+  }
   else
   {
-    // TODO
+    return nullptr;
   }
+  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right));
   return tree;
 }
 
