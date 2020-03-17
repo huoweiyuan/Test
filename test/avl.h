@@ -23,6 +23,12 @@ class avl
  private:
   struct avl_node_struct<E> *root;
  public:
+  avl():root(nullptr) {}
+  ~avl()
+  {
+    
+  }
+ public:
   int erase(const E&);
   int insert(const E&);
  private:
