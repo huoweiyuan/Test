@@ -21,6 +21,8 @@ int main()
               tree_node_t<std::pair<int, std::string> >
     >(get_tree_root(*bstree))
             << std::endl;
+  print_tree<tree_node_t<std::pair<int, std::string>>>(get_tree_root(*bstree),
+                                                       bstree->size());
   delete bstree;
   return 0;
 }
