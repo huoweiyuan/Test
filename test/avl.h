@@ -28,8 +28,10 @@ class avl
  private:
   struct avl_node_struct<E>* avl_insert(struct avl_node_struct<E> *tree,
                                         const E&);
-  struct avl_node_struct<E>* left_left_rotation(struct
-                                                avl_node_struct<E> *tree);
+  struct avl_node_struct<E>* left_left_rotation(struct avl_node_struct<E>
+                                                *tree);
+  struct avl_node_struct<E>* right_right_rotation(struct avl_node_struct<E>
+                                                  *tree);
 };
 
 template<typename E>
@@ -38,14 +40,33 @@ int avl<E>::erase(const E& e)
   return 0;
 }
 
+#define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
+#define MAX(a, b) (a > b ? a : b)
+
 template<typename E>
 struct avl_node_struct<E>* avl<E>::left_left_rotation(struct avl_node_struct<E> *tree)
 {
-  return nullptr;
+  struct avl_node_struct<E> *root = tree->left;
+  tree->left = root->right;
+  root->right = tree;
+  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+  root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
+  return root;
 }
 
-#define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
-#define MAX(a, b) (a > b ? a : b)
+template<typename E>
+struct avl_node_struct<E>* avl<E>::right_right_rotation(
+  struct avl_node_struct<E> *tree
+                                                        )
+{
+  struct avl_node_struct<E> *root = tree->right;
+  tree->right = root->left;
+  root->left = tree;
+  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+  root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
+  return root;
+}
+
 template<typename E>
 struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
                                       const E &e)
@@ -84,6 +105,7 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
       if (e > tree->right->element) // 大于右子树，毕进入其右子树
       {
         // TODO: RR旋转
+        tree->right = right_right_rotation(tree->right);
       }
       else
       {
