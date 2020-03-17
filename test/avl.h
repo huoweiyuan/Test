@@ -28,10 +28,10 @@ class avl
  private:
   struct avl_node_struct<E>* avl_insert(struct avl_node_struct<E> *tree,
                                         const E&);
-  struct avl_node_struct<E>* left_left_rotation(struct avl_node_struct<E>
-                                                *tree);
-  struct avl_node_struct<E>* right_right_rotation(struct avl_node_struct<E>
-                                                  *tree);
+  struct avl_node_struct<E>* left_left_rotation(struct avl_node_struct<E>*);
+  struct avl_node_struct<E>* right_right_rotation(struct avl_node_struct<E>*);
+  struct avl_node_struct<E>* left_right_rotation(struct avl_node_struct<E>*);
+  struct avl_node_struct<E>* right_left_rotation(struct avl_node_struct<E>*);
 };
 
 template<typename E>
@@ -68,8 +68,22 @@ struct avl_node_struct<E>* avl<E>::right_right_rotation(
 }
 
 template<typename E>
+struct avl_node_struct<E>* avl<E>::left_right_rotation(struct avl_node_struct<E> *tree)
+{
+  tree->left = right_right_rotation(tree->left);
+  return left_left_rotation(tree);
+}
+
+template<typename E>
+struct avl_node_struct<E>* avl<E>::right_left_rotation(struct avl_node_struct<E> *tree)
+{
+  tree->right = left_left_rotation(tree->left);
+  return right_right_rotation(tree);
+}
+
+template<typename E>
 struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
-                                      const E &e)
+                                              const E &e)
 {
   if (tree == nullptr)
   {
@@ -86,13 +100,11 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
     {
       if (e < tree->left->element) // 小于左子树，毕进入其左子树
       {
-        // TODO: LL旋转
         tree->left = left_left_rotation(tree->left);
       }
       else
       {
-        // TODO: LR旋转
-        // tree->left = left_right_rotation(tree->left);
+        tree->left = left_right_rotation(tree->left);
       }
     }
   }
@@ -104,12 +116,11 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
     {
       if (e > tree->right->element) // 大于右子树，毕进入其右子树
       {
-        // TODO: RR旋转
         tree->right = right_right_rotation(tree->right);
       }
       else
       {
-        // TODO: RL旋转
+        tree->left = right_left_rotation(tree->left);
       }
     }
   }
