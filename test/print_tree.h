@@ -16,17 +16,6 @@ int tree_height(const T* tree)
   }
 }
 
-/* template<typename T> */
-/* void real_print_tree(T* tree, int height) */
-/* { */
-/*   if (tree != NULl) */
-/*   { */
-/*     print_symbol(' ', 3 * height); */
-/*     printf("%c", tree->element) */
-    
-/*   } */
-/* } */
-
 void print_symbol(const char &symbol, const int &count)
 {
   for (int i = 0; i < count; i++)
@@ -35,7 +24,13 @@ void print_symbol(const char &symbol, const int &count)
   }
 }
 template<typename T>
-void print_tree(T* tree_, int size_)
+void print_tree(const T* tree_, void(&visit)(const T *))
 {
+  if (tree_ != nullptr)
+  {
+    visit(tree_);
+    print_tree(tree_->left, visit);
+    print_tree(tree_->right, visit);
+  }
 }
 #endif // _PRINT_TREE_H_
