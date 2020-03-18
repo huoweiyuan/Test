@@ -38,7 +38,16 @@ class avl
   struct avl_node_struct<E>* right_right_rotation(struct avl_node_struct<E>*);
   struct avl_node_struct<E>* left_right_rotation(struct avl_node_struct<E>*);
   struct avl_node_struct<E>* right_left_rotation(struct avl_node_struct<E>*);
+
+  template<typename T>
+  friend const struct avl_node_struct<T>* get_tree(const avl<T>&);
 };
+
+template<typename T>
+const struct avl_node_struct<T>* get_tree(const avl<T> &avl_tree)
+{
+  return avl_tree.root;
+}
 
 template<typename E>
 int avl<E>::erase(const E& e)
