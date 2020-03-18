@@ -32,6 +32,7 @@ class avl
   int erase(const E&);
   int insert(const E&);
  private:
+  int balance_factor(const struct avl_node_struct<E>*);
   struct avl_node_struct<E>* avl_insert(struct avl_node_struct<E> *tree,
                                         const E&);
   struct avl_node_struct<E>* left_left_rotation(struct avl_node_struct<E>*);
@@ -42,6 +43,29 @@ class avl
   template<typename T>
   friend const struct avl_node_struct<T>* get_tree(const avl<T>&);
 };
+
+template<typename E>
+int avl<E>::balance_factor(const struct avl_node_struct<E> *tree)
+{
+  unsigned int left_height = 0, right_height = 0;
+  if (tree->left == nullptr)
+  {
+    left_height = 0;
+  }
+  else
+  {
+    left_height = tree->left->height + 1;
+  }
+  if (tree->right == nullptr)
+  {
+    right_height = 0;
+  }
+  else
+  {
+    right_height = tree->right->height + 1;
+  }
+  return left_height - right_height;
+}
 
 template<typename T>
 const struct avl_node_struct<T>* get_tree(const avl<T> &avl_tree)
@@ -111,7 +135,7 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
   {
     tree->left = avl_insert(tree->left, e);
     // 判断平衡因子
-    if (HEIGHT(tree->left) - HEIGHT(tree->right) == 2)
+    if (balance_factor(tree) == 2)
     {
       if (e < tree->left->element) // 小于左子树，毕进入其左子树
       {
@@ -127,7 +151,7 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
   {
     tree->right = avl_insert(tree->right, e);
     // 判断平衡因子
-    if (HEIGHT(tree->right) - HEIGHT(tree->left) == 2)
+    if (balance_factor(tree) == -2)
     {
       if (e > tree->right->element) // 大于右子树，毕进入其右子树
       {
@@ -143,7 +167,7 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
   {
     return nullptr;
   }
-  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right));
+  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
   return tree;
 }
 
