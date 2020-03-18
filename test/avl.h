@@ -139,11 +139,11 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
     {
       if (e < tree->left->element) // 小于左子树，毕进入其左子树
       {
-        tree->left = left_left_rotation(tree->left);
+        tree = left_left_rotation(tree);
       }
       else
       {
-        tree->left = left_right_rotation(tree->left);
+        tree = left_right_rotation(tree);
       }
     }
   }
@@ -155,11 +155,11 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
     {
       if (e > tree->right->element) // 大于右子树，毕进入其右子树
       {
-        tree->right = right_right_rotation(tree->right);
+        tree = right_right_rotation(tree);
       }
       else
       {
-        tree->left = right_left_rotation(tree->left);
+        tree = right_left_rotation(tree);
       }
     }
   }
