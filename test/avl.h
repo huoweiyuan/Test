@@ -76,8 +76,9 @@ const struct avl_node_struct<T>* get_tree(const avl<T> &avl_tree)
 
 template<typename E>
 struct avl_node_struct<E>* avl<E>::avl_erase(struct avl_node_struct<E> *tree,
-                                     const E &e)
+                                             const E &e)
 {
+  
   return nullptr;
 }
 
