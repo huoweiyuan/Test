@@ -29,17 +29,18 @@ class avl
     
   }
  public:
-  int erase(const E&);
+  void erase(const E&);
   int insert(const E&);
  private:
   int balance_factor(const struct avl_node_struct<E>*);
-  struct avl_node_struct<E>* avl_insert(struct avl_node_struct<E> *tree,
-                                        const E&);
+  struct avl_node_struct<E>* avl_insert(struct avl_node_struct<E> *, const E&);
+  struct avl_node_struct<E>* avl_erase(struct avl_node_struct<E> *, const E&);
+ private:
   struct avl_node_struct<E>* left_left_rotation(struct avl_node_struct<E>*);
   struct avl_node_struct<E>* right_right_rotation(struct avl_node_struct<E>*);
   struct avl_node_struct<E>* left_right_rotation(struct avl_node_struct<E>*);
   struct avl_node_struct<E>* right_left_rotation(struct avl_node_struct<E>*);
-
+  // friend
   template<typename T>
   friend const struct avl_node_struct<T>* get_tree(const avl<T>&);
 };
@@ -74,16 +75,24 @@ const struct avl_node_struct<T>* get_tree(const avl<T> &avl_tree)
 }
 
 template<typename E>
-int avl<E>::erase(const E& e)
+struct avl_node_struct<E>* avl<E>::avl_erase(struct avl_node_struct<E> *tree,
+                                     const E &e)
 {
-  return 0;
+  return nullptr;
+}
+
+template<typename E>
+void avl<E>::erase(const E& e)
+{
+  root = avl_erase(root, e);
 }
 
 #define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
 #define MAX(a, b) (a > b ? a : b)
 
 template<typename E>
-struct avl_node_struct<E>* avl<E>::left_left_rotation(struct avl_node_struct<E> *tree)
+struct avl_node_struct<E>*
+avl<E>::left_left_rotation(struct avl_node_struct<E> *tree)
 {
   struct avl_node_struct<E> *root = tree->left;
   tree->left = root->right;
