@@ -11,6 +11,8 @@ void test1()
   a.insert('a');
   a.insert('b');
   a.insert('c');
+  a.insert('d');
+  a.insert('e');
   printf("%d\n", tree_height<avl_node_struct<char>>(get_tree(a)));
   print_tree<avl_node_struct<char>>(get_tree(a), visit);
 }
