@@ -78,8 +78,24 @@ template<typename E>
 struct avl_node_struct<E>* avl<E>::avl_erase(struct avl_node_struct<E> *tree,
                                              const E &e)
 {
-  
-  return nullptr;
+  struct avl_node_struct<E> *ret_tree = nullptr;
+  if (e < tree->element)
+  {
+    // TODO :
+    // into left tree
+  }
+  else if (e > tree->element)
+  {
+    // TODO :
+    // into right tree
+  }
+  else
+  {
+    // found element
+  }
+  // TODO : calcaulate tree's height
+  // TODO : rotation
+  return ret_tree;
 }
 
 template<typename E>
