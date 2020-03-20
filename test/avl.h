@@ -45,6 +45,9 @@ class avl
   friend const struct avl_node_struct<T>* get_tree(const avl<T>&);
 };
 
+#define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
+#define MAX(a, b) (a > b ? a : b)
+
 template<typename E>
 int avl<E>::balance_factor(const struct avl_node_struct<E> *tree)
 {
@@ -83,18 +86,35 @@ struct avl_node_struct<E>* avl<E>::avl_erase(struct avl_node_struct<E> *tree,
   {
     // TODO :
     // into left tree
+    tree->left = avl_erase(tree->left, e);
+    ret_tree = tree;
   }
   else if (e > tree->element)
   {
     // TODO :
     // into right tree
+    tree->right = avl_erase(tree->right, e);
+    ret_tree = tree;
   }
   else
   {
     // found element
   }
   // TODO : calcaulate tree's height
+  if (tree->left == nullptr && tree->right == nullptr)
+    tree->height = 0;
+  else
+    tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
   // TODO : rotation
+  int bf = balance_factor(tree);
+  if (bf == -2)
+  {
+    // TODO : RR or RL rotation
+  }
+  else if (bf == 2)
+  {
+    // TODO : LL or LR rotation
+  }
   return ret_tree;
 }
 
@@ -103,9 +123,6 @@ void avl<E>::erase(const E& e)
 {
   root = avl_erase(root, e);
 }
-
-#define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
-#define MAX(a, b) (a > b ? a : b)
 
 template<typename E>
 struct avl_node_struct<E>*
