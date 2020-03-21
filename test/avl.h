@@ -67,17 +67,17 @@ struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tr
   }
 
   // calculate tree's height
-  if (tree->left == nullptr && tree->right == nullptr)
+  if ((*tree)->left == nullptr && (*tree)->right == nullptr)
     tree->height = 0;
   else
-    tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+    (*tree)->height = MAX(HEIGHT((*tree)->left), HEIGHT(*(tree)->right)) + 1;
 
   // calculate rotation
-  int bf = balance_factor(tree);
+  int bf = balance_factor(*tree);
   // TODO : rotation
-  if (bf == 2)
+  if (bf == -2)
   {
-    
+    //
   }
   else if (bf == 2)
   {
