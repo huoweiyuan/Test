@@ -19,8 +19,38 @@ void test1()
   printf("%d\n", tree_height<avl_node_struct<char>>(get_tree(a)));
   print_tree<avl_node_struct<char>>(get_tree(a), visit);
 }
+
+void visit2(const avl_node_struct<int> *tree)
+{
+  printf("%d ", tree->element);
+}
+void test2()
+{
+  Avl<int> a;
+  a.insert(3);
+  a.insert(2);
+  a.insert(5);
+  a.insert(1);
+  a.insert(4);
+  a.insert(7);
+  a.insert(6);
+  a.insert(8);
+  printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
+  print_tree<avl_node_struct<int>>(get_tree(a), visit2);
+  printf("\n");
+  a.erase(4);
+  printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
+  print_tree<avl_node_struct<int>>(get_tree(a), visit2);
+  printf("\n");
+  a.erase(7);
+  printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
+  print_tree<avl_node_struct<int>>(get_tree(a), visit2);
+  printf("\n");
+
+}
 int main()
 {
-  test1();
+  // test1();
+  test2();
   return 0;
 }
