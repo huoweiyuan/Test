@@ -7,7 +7,7 @@ void visit(const avl_node_struct<char> *tree)
 }
 void test1()
 {
-  avl<char> a;
+  Avl<char> a;
   a.insert('a');
   a.insert('b');
   a.insert('c');

@@ -18,21 +18,19 @@ void avl_node_struct_init(avl_node_struct<T> *node)
   node->right = nullptr;
 }
 template<typename E>
-class avl
+class Avl
 {
  private:
   struct avl_node_struct<E> *root;
  public:
-  avl():root(nullptr) {}
-  ~avl()
-  {
-    
-  }
+  Avl():root(nullptr) {}
+  ~Avl() {}
  public:
   void erase(const E&);
   int insert(const E&);
  private:
   int balance_factor(const struct avl_node_struct<E>*);
+  struct avl_node_struct<E>* pop_least_node(struct avl_node_struct<E>*);
   struct avl_node_struct<E>* avl_insert(struct avl_node_struct<E> *, const E&);
   struct avl_node_struct<E>* avl_erase(struct avl_node_struct<E> *, const E&);
  private:
@@ -42,14 +40,19 @@ class avl
   struct avl_node_struct<E>* right_left_rotation(struct avl_node_struct<E>*);
   // friend
   template<typename T>
-  friend const struct avl_node_struct<T>* get_tree(const avl<T>&);
+  friend const struct avl_node_struct<T>* get_tree(const Avl<T>&);
 };
 
 #define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
 #define MAX(a, b) (a > b ? a : b)
 
 template<typename E>
-int avl<E>::balance_factor(const struct avl_node_struct<E> *tree)
+struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>* tree)
+{
+  return nullptr;
+}
+template<typename E>
+int Avl<E>::balance_factor(const struct avl_node_struct<E> *tree)
 {
   unsigned int left_height = 0, right_height = 0;
   if (tree->left == nullptr)
@@ -72,26 +75,24 @@ int avl<E>::balance_factor(const struct avl_node_struct<E> *tree)
 }
 
 template<typename T>
-const struct avl_node_struct<T>* get_tree(const avl<T> &avl_tree)
+const struct avl_node_struct<T>* get_tree(const Avl<T> &avl_tree)
 {
   return avl_tree.root;
 }
 
 template<typename E>
-struct avl_node_struct<E>* avl<E>::avl_erase(struct avl_node_struct<E> *tree,
+struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
                                              const E &e)
 {
   struct avl_node_struct<E> *ret_tree = nullptr;
   if (e < tree->element)
   {
-    // TODO :
     // into left tree
     tree->left = avl_erase(tree->left, e);
     ret_tree = tree;
   }
   else if (e > tree->element)
   {
-    // TODO :
     // into right tree
     tree->right = avl_erase(tree->right, e);
     ret_tree = tree;
@@ -99,13 +100,30 @@ struct avl_node_struct<E>* avl<E>::avl_erase(struct avl_node_struct<E> *tree,
   else
   {
     // found element
+    if (tree->left ==nullptr)
+    {
+      // left tree is empty
+      ret_tree = tree->right;
+      // tree->right = nullptr;
+    }
+    else if (tree->right == nullptr)
+    {
+      // right tree is empty
+      ret_tree = tree->left;
+    }
+    else
+    {
+      // left tree is note empty, neither dose right tree
+      // find least node info right tree
+      
+    }
   }
-  // TODO : calcaulate tree's height
+  // calcaulate tree's height
   if (tree->left == nullptr && tree->right == nullptr)
     tree->height = 0;
   else
     tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
-  // TODO : rotation
+  // calculate balance factor
   int bf = balance_factor(tree);
   if (bf == -2)
   {
@@ -119,14 +137,13 @@ struct avl_node_struct<E>* avl<E>::avl_erase(struct avl_node_struct<E> *tree,
 }
 
 template<typename E>
-void avl<E>::erase(const E& e)
+void Avl<E>::erase(const E& e)
 {
   root = avl_erase(root, e);
 }
 
 template<typename E>
-struct avl_node_struct<E>*
-avl<E>::left_left_rotation(struct avl_node_struct<E> *tree)
+struct avl_node_struct<E>* Avl<E>::left_left_rotation(struct avl_node_struct<E> *tree)
 {
   struct avl_node_struct<E> *root = tree->left;
   tree->left = root->right;
@@ -137,7 +154,7 @@ avl<E>::left_left_rotation(struct avl_node_struct<E> *tree)
 }
 
 template<typename E>
-struct avl_node_struct<E>* avl<E>::right_right_rotation(
+struct avl_node_struct<E>* Avl<E>::right_right_rotation(
   struct avl_node_struct<E> *tree
                                                         )
 {
@@ -150,21 +167,21 @@ struct avl_node_struct<E>* avl<E>::right_right_rotation(
 }
 
 template<typename E>
-struct avl_node_struct<E>* avl<E>::left_right_rotation(struct avl_node_struct<E> *tree)
+struct avl_node_struct<E>* Avl<E>::left_right_rotation(struct avl_node_struct<E> *tree)
 {
   tree->left = right_right_rotation(tree->left);
   return left_left_rotation(tree);
 }
 
 template<typename E>
-struct avl_node_struct<E>* avl<E>::right_left_rotation(struct avl_node_struct<E> *tree)
+struct avl_node_struct<E>* Avl<E>::right_left_rotation(struct avl_node_struct<E> *tree)
 {
   tree->right = left_left_rotation(tree->left);
   return right_right_rotation(tree);
 }
 
 template<typename E>
-struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
+struct avl_node_struct<E>* Avl<E>::avl_insert(struct avl_node_struct<E> *tree,
                                               const E &e)
 {
   if (tree == nullptr)
@@ -215,7 +232,7 @@ struct avl_node_struct<E>* avl<E>::avl_insert(struct avl_node_struct<E> *tree,
 }
 
 template<typename E>
-int avl<E>::insert(const E& e)
+int Avl<E>::insert(const E& e)
 {
   struct avl_node_struct<E> *tree = nullptr;
   tree = avl_insert(root, e);
