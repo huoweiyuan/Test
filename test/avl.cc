@@ -77,6 +77,14 @@ printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
   printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
   print_tree<avl_node_struct<int>>(get_tree(a), visit2);
   printf("\n");
+  a.erase(2);
+  printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
+  print_tree<avl_node_struct<int>>(get_tree(a), visit2);
+  printf("\n");
+  a.erase(5);
+  printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
+  print_tree<avl_node_struct<int>>(get_tree(a), visit2);
+  printf("\n");
 
 }
 int main()
