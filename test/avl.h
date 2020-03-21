@@ -74,16 +74,29 @@ struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tr
 
   // calculate rotation
   int bf = balance_factor(*tree);
-  // TODO : rotation
+  //rotation
   if (bf == -2)
   {
-    //
+    if ((*tree)->right->right != nullptr) // RR rotation
+    {
+      *tree = right_right_rotation(*tree);
+    }
+    else // LR rotation
+    {
+      *tree = left_right_rotation(*tree);
+    }
   }
   else if (bf == 2)
   {
-    
+    if ((*tree)->left->left != nullptr) // RR rotation
+    {
+      *tree = right_right_rotation(*tree);
+    }
+    else // LR rotation
+    {
+      *tree = left_right_rotation(*tree);
+    }
   }
-  // TODO : set tree
   return least_node;
 }
 
