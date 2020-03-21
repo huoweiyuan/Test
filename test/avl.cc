@@ -62,9 +62,17 @@ void test3()
   a.insert(3);
   a.insert(2);
   a.insert(1);
+printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
+  print_tree<avl_node_struct<int>>(get_tree(a), visit2);
+  printf("\n");
+
   a.insert(6);
   a.insert(5);
   a.insert(8);
+  printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
+  print_tree<avl_node_struct<int>>(get_tree(a), visit2);
+  printf("\n");
+
   a.erase(3);
   printf("%d\n", tree_height<avl_node_struct<int>>(get_tree(a)));
   print_tree<avl_node_struct<int>>(get_tree(a), visit2);

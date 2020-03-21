@@ -223,8 +223,14 @@ struct avl_node_struct<E>* Avl<E>::left_left_rotation(struct avl_node_struct<E> 
   struct avl_node_struct<E> *root = tree->left;
   tree->left = root->right;
   root->right = tree;
-  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
-  root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
+  if (tree->left == nullptr && tree->right == nullptr)
+    tree->height = 0;
+  else
+    tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+  if (root->left == nullptr && root->right == nullptr)
+    root->height = 0;
+  else
+    root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
   return root;
 }
 
@@ -237,8 +243,14 @@ struct avl_node_struct<E>* Avl<E>::right_right_rotation(
   struct avl_node_struct<E> *root = tree->right;
   tree->right = root->left;
   root->left = tree;
-  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
-  root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
+  if (tree->left == nullptr && tree->right == nullptr)
+    tree->height = 0;
+  else
+    tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+  if (root->left == nullptr && root->right == nullptr)
+    root->height = 0;
+  else
+    root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
   return root;
 }
 
@@ -254,7 +266,7 @@ struct avl_node_struct<E>* Avl<E>::left_right_rotation(struct avl_node_struct<E>
 template<typename E>
 struct avl_node_struct<E>* Avl<E>::right_left_rotation(struct avl_node_struct<E> *tree)
 {
-  tree->right = left_left_rotation(tree->left);
+  tree->right = left_left_rotation(tree->right);
   return right_right_rotation(tree);
 }
 
