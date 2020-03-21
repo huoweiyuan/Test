@@ -54,13 +54,21 @@ struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tr
     return nullptr;
   if ((*tree)->left == nullptr)
   {
-    return *tree;
+    return *tree; // return struct avl_node_struct<E>*
   }
   else
   {
-    least_node = pop_least_node((*tree)->left);
+    least_node = pop_least_node(&((*tree)->left));
+    if ((*tree)->left == least_node)
+    {
+      // Let least's right child be tree's left child
+      (*tree)->left = least_node->right;
+    }
   }
-  // delete
+
+  // TODO : calculate tree's height
+  // TODO : rotation
+  // TODO : set tree
   return least_node;
 }
 
