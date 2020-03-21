@@ -66,7 +66,12 @@ struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tr
     }
   }
 
-  // TODO : calculate tree's height
+  // calculate tree's height
+  if (tree->left == nullptr && tree->right == nullptr)
+    tree->height = 0;
+  else
+    tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+  
   // TODO : rotation
   // TODO : set tree
   return least_node;
@@ -137,7 +142,7 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
       // left tree is note empty, neither dose right tree
       // find least node info right tree
       struct avl_node_struct<E> *least_right_node = pop_least_node(&(tree->right));
-      
+
     }
   }
   // calcaulate tree's height
