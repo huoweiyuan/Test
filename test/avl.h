@@ -30,7 +30,7 @@ class Avl
   int insert(const E&);
  private:
   int balance_factor(const struct avl_node_struct<E>*);
-  struct avl_node_struct<E>* pop_least_node(struct avl_node_struct<E>*);
+  struct avl_node_struct<E>* pop_least_node(struct avl_node_struct<E>**);
   struct avl_node_struct<E>* avl_insert(struct avl_node_struct<E> *, const E&);
   struct avl_node_struct<E>* avl_erase(struct avl_node_struct<E> *, const E&);
  private:
@@ -47,10 +47,23 @@ class Avl
 #define MAX(a, b) (a > b ? a : b)
 
 template<typename E>
-struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>* tree)
+struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tree)
 {
-  return nullptr;
+  struct avl_node_struct<E> *least_node = nullptr;
+  if (*tree == nullptr)
+    return nullptr;
+  if ((*tree)->left == nullptr)
+  {
+    return *tree;
+  }
+  else
+  {
+    least_node = pop_least_node((*tree)->left);
+  }
+  // delete
+  return least_node;
 }
+
 template<typename E>
 int Avl<E>::balance_factor(const struct avl_node_struct<E> *tree)
 {
@@ -115,6 +128,7 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
     {
       // left tree is note empty, neither dose right tree
       // find least node info right tree
+      struct avl_node_struct<E> *least_right_node = pop_least_node(&(tree->right));
       
     }
   }
