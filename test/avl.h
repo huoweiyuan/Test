@@ -204,7 +204,7 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
     }
     else // LR
     {
-      ret_tree = right_right_rotation(ret_tree);
+      ret_tree = left_right_rotation(ret_tree);
     }
   }
   return ret_tree;
