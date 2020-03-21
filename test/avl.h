@@ -84,16 +84,16 @@ struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tr
     {
       *tree = right_right_rotation(*tree);
     }
-    else // LR rotation
+    else // RL rotation
     {
-      *tree = left_right_rotation(*tree);
+      *tree = right_left_rotation(*tree);
     }
   }
   else if (bf == 2)
   {
-    if ((*tree)->left->left != nullptr) // RR rotation
+    if ((*tree)->left->left != nullptr) // LL rotation
     {
-      *tree = right_right_rotation(*tree);
+      *tree = left_left_rotation(*tree);
     }
     else // LR rotation
     {
