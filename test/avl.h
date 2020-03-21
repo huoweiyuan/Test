@@ -136,6 +136,8 @@ template<typename E>
 struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
                                              const E &e)
 {
+  if (tree == nullptr)
+    return nullptr;
   struct avl_node_struct<E> *ret_tree = nullptr;
   if (e < tree->element)
   {
@@ -152,7 +154,7 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
   else
   {
     // found element
-    if (tree->left ==nullptr)
+    if (tree->left == nullptr)
     {
       // left tree is empty
       ret_tree = tree->right;
@@ -186,11 +188,11 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
     // RR or RL rotation
     if (ret_tree->right->right != nullptr) // RR
     {
-      ret_tree = left_left_rotation(ret_tree);
+      ret_tree = right_right_rotation(ret_tree);
     }
     else // RL
     {
-      ret_tree = left_right_rotation(ret_tree);
+      ret_tree = right_left_rotation(ret_tree);
     }
   }
   else if (bf == 2)
@@ -198,11 +200,11 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
     // LL or LR rotation
     if (ret_tree->left->left != nullptr) // LL
     {
-      ret_tree = right_right_rotation(ret_tree);
+      ret_tree = left_left_rotation(ret_tree);
     }
     else // LR
     {
-      ret_tree = right_left_rotation(ret_tree);
+      ret_tree = right_right_rotation(ret_tree);
     }
   }
   return ret_tree;
@@ -214,6 +216,7 @@ void Avl<E>::erase(const E& e)
   root = avl_erase(root, e);
 }
 
+// LL型不平衡
 template<typename E>
 struct avl_node_struct<E>* Avl<E>::left_left_rotation(struct avl_node_struct<E> *tree)
 {
@@ -225,6 +228,7 @@ struct avl_node_struct<E>* Avl<E>::left_left_rotation(struct avl_node_struct<E> 
   return root;
 }
 
+// RR型不平衡
 template<typename E>
 struct avl_node_struct<E>* Avl<E>::right_right_rotation(
   struct avl_node_struct<E> *tree
@@ -238,6 +242,7 @@ struct avl_node_struct<E>* Avl<E>::right_right_rotation(
   return root;
 }
 
+// LR型不平衡
 template<typename E>
 struct avl_node_struct<E>* Avl<E>::left_right_rotation(struct avl_node_struct<E> *tree)
 {
@@ -245,6 +250,7 @@ struct avl_node_struct<E>* Avl<E>::left_right_rotation(struct avl_node_struct<E>
   return left_left_rotation(tree);
 }
 
+// RL型不平衡
 template<typename E>
 struct avl_node_struct<E>* Avl<E>::right_left_rotation(struct avl_node_struct<E> *tree)
 {
