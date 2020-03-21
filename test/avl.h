@@ -54,7 +54,10 @@ struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tr
     return nullptr;
   if ((*tree)->left == nullptr)
   {
-    return *tree; // return struct avl_node_struct<E>*
+    // least node is root of right tree
+    least_node = *tree;
+    *tree = least_node->right;
+    return least_node; // return struct avl_node_struct<E>*
   }
   else
   {
@@ -68,9 +71,9 @@ struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tr
 
   // calculate tree's height
   if ((*tree)->left == nullptr && (*tree)->right == nullptr)
-    tree->height = 0;
+    (*tree)->height = 0;
   else
-    (*tree)->height = MAX(HEIGHT((*tree)->left), HEIGHT(*(tree)->right)) + 1;
+    (*tree)->height = MAX(HEIGHT((*tree)->left), HEIGHT((*tree)->right)) + 1;
 
   // calculate rotation
   int bf = balance_factor(*tree);
@@ -165,8 +168,11 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
       // left tree is note empty, neither dose right tree
       // find least node info right tree
       struct avl_node_struct<E> *least_right_node = pop_least_node(&(tree->right));
-
+      least_right_node->left = tree->left;
+      least_right_node->right = tree->right;
+      ret_tree = least_right_node;
     }
+    // TODO : free tree node
   }
   // calcaulate tree's height
   if (tree->left == nullptr && tree->right == nullptr)
@@ -177,11 +183,27 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
   int bf = balance_factor(tree);
   if (bf == -2)
   {
-    // TODO : RR or RL rotation
+    // RR or RL rotation
+    if (ret_tree->right->right != nullptr) // RR
+    {
+      ret_tree = left_left_rotation(ret_tree);
+    }
+    else // RL
+    {
+      ret_tree = left_right_rotation(ret_tree);
+    }
   }
   else if (bf == 2)
   {
-    // TODO : LL or LR rotation
+    // LL or LR rotation
+    if (ret_tree->left->left != nullptr) // LL
+    {
+      ret_tree = right_right_rotation(ret_tree);
+    }
+    else // LR
+    {
+      ret_tree = right_left_rotation(ret_tree);
+    }
   }
   return ret_tree;
 }
