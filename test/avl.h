@@ -43,7 +43,9 @@ class Avl
   friend const struct avl_node_struct<T>* get_tree(const Avl<T>&);
 };
 
-#define HEIGHT(p) (p == nullptr ? 0 : ((avl_node_struct<E>*)p)->height)
+#define HEIGHT(p) (p == nullptr ? 0 : \
+                   p->left == nullptr && p->right == nullptr ? \
+                   0 : ((avl_node_struct<E>*)p)->height)
 #define MAX(a, b) (a > b ? a : b)
 
 template<typename E>
@@ -70,10 +72,7 @@ struct avl_node_struct<E>* Avl<E>::pop_least_node(struct avl_node_struct<E>** tr
   }
 
   // calculate tree's height
-  if ((*tree)->left == nullptr && (*tree)->right == nullptr)
-    (*tree)->height = 0;
-  else
-    (*tree)->height = MAX(HEIGHT((*tree)->left), HEIGHT((*tree)->right)) + 1;
+  (*tree)->height = MAX(HEIGHT((*tree)->left), HEIGHT((*tree)->right)) + 1;
 
   // calculate rotation
   int bf = balance_factor(*tree);
@@ -177,10 +176,7 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
     // TODO : free tree node
   }
   // calcaulate tree's height
-  if (tree->left == nullptr && tree->right == nullptr)
-    tree->height = 0;
-  else
-    tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
   // calculate balance factor
   int bf = balance_factor(tree);
   if (bf == -2)
@@ -223,14 +219,8 @@ struct avl_node_struct<E>* Avl<E>::left_left_rotation(struct avl_node_struct<E> 
   struct avl_node_struct<E> *root = tree->left;
   tree->left = root->right;
   root->right = tree;
-  if (tree->left == nullptr && tree->right == nullptr)
-    tree->height = 0;
-  else
-    tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
-  if (root->left == nullptr && root->right == nullptr)
-    root->height = 0;
-  else
-    root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
+  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+  root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
   return root;
 }
 
@@ -243,14 +233,8 @@ struct avl_node_struct<E>* Avl<E>::right_right_rotation(
   struct avl_node_struct<E> *root = tree->right;
   tree->right = root->left;
   root->left = tree;
-  if (tree->left == nullptr && tree->right == nullptr)
-    tree->height = 0;
-  else
-    tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
-  if (root->left == nullptr && root->right == nullptr)
-    root->height = 0;
-  else
-    root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
+  tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
+  root->height = MAX(HEIGHT(root->left), HEIGHT(root->right)) + 1;
   return root;
 }
 
