@@ -173,7 +173,8 @@ struct avl_node_struct<E>* Avl<E>::avl_erase(struct avl_node_struct<E> *tree,
       least_right_node->right = tree->right;
       ret_tree = least_right_node;
     }
-    // TODO : free tree node
+    // free tree node
+    free(tree);
   }
   // calcaulate tree's height
   tree->height = MAX(HEIGHT(tree->left), HEIGHT(tree->right)) + 1;
