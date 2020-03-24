@@ -19,8 +19,11 @@ class RBTree
   RBTree() : root__(nullptr) {}
   ~RBTree()
   {
-    
+    // TODO:
   }
+ public:
+  void insert(const T&);
+  void erase(const T&);
  private:
  private:
   struct rb_node_struct<T> *root__;
@@ -28,6 +31,18 @@ class RBTree
   template<typename V>
   friend const struct rb_node_struct<V>* get_tree(const RBTree<V> &);
 };
+
+template<typename T>
+void RBTree<T>::insert(const T &element)
+{
+  // TODO :
+}
+
+template<typename T>
+void RBTree<T>::erase(const T &element)
+{
+  // TODO :
+}
 
 template<typename V>
 const struct rb_node_struct<V>* get_tree(const RBTree<V> &rbtree)
