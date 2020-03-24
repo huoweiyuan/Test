@@ -47,7 +47,7 @@ class RBTree
 template<typename T>
 void RBTree<T>::insert(const T &element)
 {
-  struct rb_node_struct<T> *pu = nullptr, tmp = root__;
+  struct rb_node_struct<T> *pu = nullptr, *tmp = root__;
   struct rb_node_struct<T> *u = new struct rb_node_struct<T>();
   rb_node_init(u);
   while (tmp != nullptr)
@@ -68,7 +68,7 @@ void RBTree<T>::insert(const T &element)
     else
     {
       // element == tmp->element
-      free(u);
+      delete u;
       return;
     }
   }
