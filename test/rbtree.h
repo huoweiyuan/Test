@@ -35,13 +35,13 @@ class RBTree
   void insert(const T&);
   void erase(const T&);
  private:
-  
+  struct rb_node_struct<T>* rb_insert_fix(struct rb_node_struct<T>*);
  private:
   struct rb_node_struct<T> *root__;
 
   //
   template<typename V>
-  friend const struct rb_node_struct<V>* get_tree(const RBTree<V> &);
+  friend const struct rb_node_struct<V>* get_tree(const RBTree<V>&);
 };
 
 template<typename T>
@@ -78,6 +78,14 @@ void RBTree<T>::insert(const T &element)
   else
     u->color = RED;
   // TODO : change color or rotation
+  root__ = rb_insert_fix(u);
+}
+
+template<typename T>
+struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
+{
+  // TODO:
+  return nullptr;
 }
 
 template<typename T>
