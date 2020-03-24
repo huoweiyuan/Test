@@ -10,7 +10,17 @@ struct rb_node_struct
   Color color;
   struct rb_node_struct<E> *left;
   struct rb_node_struct<E> *right;
+  struct rb_node_struct<E> *parent;
 };
+
+template<typename E>
+void rb_node_init(struct rb_node_struct<E> *node)
+{
+  node->color = BLACK;
+  node->left = nullptr;
+  node->right = nullptr;
+  node->parent = nullptr;
+}
 
 template<typename T>
 class RBTree
@@ -25,9 +35,11 @@ class RBTree
   void insert(const T&);
   void erase(const T&);
  private:
+  
  private:
   struct rb_node_struct<T> *root__;
 
+  //
   template<typename V>
   friend const struct rb_node_struct<V>* get_tree(const RBTree<V> &);
 };
@@ -35,7 +47,37 @@ class RBTree
 template<typename T>
 void RBTree<T>::insert(const T &element)
 {
-  // TODO :
+  struct rb_node_struct<T> *pu = nullptr, tmp = root__;
+  struct rb_node_struct<T> *u = new struct rb_node_struct<T>();
+  rb_node_init(u);
+  while (tmp != nullptr)
+  {
+    pu = tmp;
+    if (element < tmp->element)
+    {
+      tmp = tmp->left;
+      if (tmp == nullptr)
+        pu->left = u;
+    }
+    else if (element > tmp->element)
+    {
+      tmp = tmp->right;
+      if (tmp == nullptr)
+        pu->right = u;
+    }
+    else
+    {
+      // element == tmp->element
+      free(u);
+      return;
+    }
+  }
+  u->parent = pu;
+  if (pu == nullptr)
+    root__ = u;
+  else
+    u->color = RED;
+  // TODO : change color or rotation
 }
 
 template<typename T>
