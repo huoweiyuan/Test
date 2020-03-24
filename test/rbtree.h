@@ -22,7 +22,17 @@ class RBTree
     
   }
  private:
+ private:
   struct rb_node_struct<T> *root__;
+
+  template<typename V>
+  friend const struct rb_node_struct<V>* get_tree(const RBTree<V> &);
 };
+
+template<typename V>
+const struct rb_node_struct<V>* get_tree(const RBTree<V> &rbtree)
+{
+  return rbtree.root__;
+}
 };
 #endif // _RBTREE_H_
