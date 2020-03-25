@@ -88,13 +88,29 @@ void RBTree<T>::insert(const T &element)
   u->element = element;
   u->parent = pu;
   // TODO : change color or rotation
-  // root__ = rb_insert_fix(u);
+  root__ = rb_insert_fix(u);
 }
 
 template<typename T>
 struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
 {
   // TODO:
+  if (u->parent == nullptr)
+  {
+    u->color = BLACK;
+    return u;
+  }
+  else if (u->parent->color == BLACK)
+  {
+    while (u->parent != nullptr)
+      u = u->parent;
+    return u;
+  }
+  else
+  {
+    // need to fix
+    
+  }
   return nullptr;
 }
 
