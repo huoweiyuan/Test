@@ -109,7 +109,33 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
   else
   {
     // need to fix
-    
+    struct rb_node_struct<T> *pu = u->parent;
+    struct rb_node_struct<T> *gu = pu->parent;
+    // 叔父是红色
+    if (pu == gu->left)
+    {
+      struct rb_node_struct<T> *uncle = gu->right;
+      if (uncle->color == RED) // LXr 型
+      {
+        
+      }
+      else // LXb 型
+      {
+        
+      }
+    }
+    else
+    {
+      struct rb_node_struct<T> *uncle = gu->left;
+      if (uncle->color == RED) // RXr 型
+      {
+        
+      }
+      else // RXb 型
+      {
+        
+      }
+    }
   }
   return nullptr;
 }
