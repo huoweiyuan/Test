@@ -178,7 +178,23 @@ void RBTree<T>::insert(const T &element)
 template<typename T>
 struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
 {
-  return nullptr;
+  RBTYPE type;
+  while ((type = get_u_type(u)) != Other)
+  {
+    switch (type)
+    {
+      case LLr:
+      case LRr:
+      case RLr:
+      case RRr:
+        {
+          break;
+        }
+    }
+  }
+  while (u->parent != nullptr)
+    u = u->parent;
+  return u;
 }
 
 template<typename T>
