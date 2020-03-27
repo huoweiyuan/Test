@@ -192,6 +192,7 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
         }
     }
   }
+  if (u->parent == nullptr) set_black_color(u);
   while (u->parent != nullptr)
     u = u->parent;
   return u;
