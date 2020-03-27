@@ -36,6 +36,8 @@ class RBTree
   void erase(const T&);
  private:
   struct rb_node_struct<T>* rb_insert_fix(struct rb_node_struct<T>*);
+  void set_red_color(struct rb_node_struct<T>*);
+  void set_black_color(struct rb_node_struct<T>*);
  private:
   struct rb_node_struct<T> *root__;
 
@@ -84,7 +86,7 @@ void RBTree<T>::insert(const T &element)
     rb_node_init(u);
     // u->color = BLACK;
   }
-  u->color = RED;
+  set_red_color(u);
   u->element = element;
   u->parent = pu;
   // TODO : change color or rotation
@@ -97,7 +99,7 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
   // TODO:
   if (u->parent == nullptr)
   {
-    u->color = BLACK;
+    set_black_color(u);
     return u;
   }
   else if (u->parent->color == BLACK)
@@ -138,6 +140,18 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
     }
   }
   return nullptr;
+}
+
+template<typename T>
+void RBTree<T>::set_red_color(struct rb_node_struct<T> *node)
+{
+  node->color = RED;
+}
+
+template<typename T>
+void RBTree<T>::set_black_color(struct rb_node_struct<T> *node)
+{
+  node->color = BLACK;
 }
 
 template<typename T>
