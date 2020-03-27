@@ -3,6 +3,7 @@
 namespace bfzq
 {
 enum Color {RED, BLACK};
+enum RBTYPE {LLr, LRr, RRr, RLr, LLb, LRb, RRb, RLb, Other};
 template<typename E>
 struct rb_node_struct
 {
@@ -38,6 +39,9 @@ class RBTree
   struct rb_node_struct<T>* rb_insert_fix(struct rb_node_struct<T>*);
   void set_red_color(struct rb_node_struct<T>*);
   void set_black_color(struct rb_node_struct<T>*);
+  bool is_red_color(struct rb_node_struct<T>*);
+  bool is_black_color(struct rb_node_struct<T>*);
+  RBTYPE get_u_type(struct rb_node_struct<T>*);
  private:
   struct rb_node_struct<T> *root__;
 
@@ -45,6 +49,84 @@ class RBTree
   template<typename V>
   friend const struct rb_node_struct<V>* get_tree(const RBTree<V>&);
 };
+
+template<typename T>
+bool RBTree<T>::is_red_color(struct rb_node_struct<T>* u)
+{
+  return u->color == RED;
+}
+template<typename T>
+bool RBTree<T>::is_black_color(struct rb_node_struct<T>* u)
+{
+  return u->color == BLACK;
+}
+
+template<typename T>
+RBTYPE RBTree<T>::get_u_type(struct rb_node_struct<T> *u)
+{
+  if (u->parent == nullptr || is_black_color(u->parent))
+  {
+    return Other;
+  }
+  else
+  {
+    struct rb_node_struct<T> *pu = u->parent;
+    struct rb_node_struct<T> *gu = pu->parent;
+    // 叔父是红色
+    if (pu == gu->left)
+    {
+      struct rb_node_struct<T> *uncle = gu->right;
+      if (uncle->color == RED) // LXr 型
+      {
+        if (pu->left == u) // LLr 型
+        {
+          return LLr;
+        }
+        else // LRr 型
+        {
+          return LRr;
+        }
+      }
+      else // LXb 型
+      {
+        if (pu->left == u) // LLr 型
+        {
+          return LLb;
+        }
+        else // LRr 型
+        {
+          return LRb;
+        }
+      }
+    }
+    else
+    {
+      struct rb_node_struct<T> *uncle = gu->left;
+      if (uncle->color == RED) // RXr 型
+      {
+        if (pu->left == u) // RLr 型
+        {
+          return RLr;
+        }
+        else // RRr 型
+        {
+          return RRr;
+        }
+      }
+      else // RXb 型
+      {
+        if (pu->left == u) // RLb 型
+        {
+          return RLb;
+        }
+        else // RRb 型
+        {
+          return RRb;
+        }
+      }
+    }
+  }
+}
 
 template<typename T>
 void RBTree<T>::insert(const T &element)
@@ -96,49 +178,6 @@ void RBTree<T>::insert(const T &element)
 template<typename T>
 struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
 {
-  // TODO:
-  if (u->parent == nullptr)
-  {
-    set_black_color(u);
-    return u;
-  }
-  else if (u->parent->color == BLACK)
-  {
-    while (u->parent != nullptr)
-      u = u->parent;
-    return u;
-  }
-  else
-  {
-    // need to fix
-    struct rb_node_struct<T> *pu = u->parent;
-    struct rb_node_struct<T> *gu = pu->parent;
-    // 叔父是红色
-    if (pu == gu->left)
-    {
-      struct rb_node_struct<T> *uncle = gu->right;
-      if (uncle->color == RED) // LXr 型
-      {
-        
-      }
-      else // LXb 型
-      {
-        
-      }
-    }
-    else
-    {
-      struct rb_node_struct<T> *uncle = gu->left;
-      if (uncle->color == RED) // RXr 型
-      {
-        
-      }
-      else // RXb 型
-      {
-        
-      }
-    }
-  }
   return nullptr;
 }
 
