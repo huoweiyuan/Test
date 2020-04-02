@@ -192,7 +192,9 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
         }
     }
   }
+  // 根节点
   if (u->parent == nullptr) set_black_color(u);
+  // 找到根节点
   while (u->parent != nullptr)
     u = u->parent;
   return u;
