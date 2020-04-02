@@ -7,7 +7,8 @@ using bfzq::RBTree;
 
 void visit1(const rb_node_struct<int> *tree)
 {
-  printf(".element=%d .color=%d\n", tree->element, tree->color);
+  printf(".element=%d .color=%s\n",
+         tree->element, tree->color == bfzq::RED ? "RED" : "BLACK");
 }
 
 void test1()
