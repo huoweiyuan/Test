@@ -2,7 +2,7 @@
 #define _RBTREE_H_
 namespace bfzq
 {
-enum Color {RED, BLACK};
+enum Color {RED = 0, BLACK = 1};
 enum RBTYPE {LLr, LRr, RRr, RLr, LLb, LRb, RRb, RLb, Other};
 template<typename E>
 struct rb_node_struct
@@ -37,6 +37,7 @@ class RBTree
   void erase(const T&);
  private:
   struct rb_node_struct<T>* rb_insert_fix(struct rb_node_struct<T>*);
+  // struct rb_node_struct<T>* rb_set_color(struct rb_node_struct<T>*, RBTYPE);
   void set_red_color(struct rb_node_struct<T>*);
   void set_black_color(struct rb_node_struct<T>*);
   bool is_red_color(struct rb_node_struct<T>*);
@@ -49,6 +50,13 @@ class RBTree
   template<typename V>
   friend const struct rb_node_struct<V>* get_tree(const RBTree<V>&);
 };
+
+// template<typename T>
+// struct rb_node_struct<T>* RBTree<T>::rb_set_color(struct rb_node_struct<T>* u,
+//                                                   RBTYPE type)
+// {
+  
+// }
 
 template<typename T>
 bool RBTree<T>::is_red_color(struct rb_node_struct<T>* u)
@@ -76,7 +84,7 @@ RBTYPE RBTree<T>::get_u_type(struct rb_node_struct<T> *u)
     if (pu == gu->left)
     {
       struct rb_node_struct<T> *uncle = gu->right;
-      if (uncle->color == RED) // LXr 型
+      if (uncle != nullptr && uncle->color == RED) // LXr 型
       {
         if (pu->left == u) // LLr 型
         {
@@ -102,7 +110,7 @@ RBTYPE RBTree<T>::get_u_type(struct rb_node_struct<T> *u)
     else
     {
       struct rb_node_struct<T> *uncle = gu->left;
-      if (uncle->color == RED) // RXr 型
+      if (uncle != nullptr && uncle->color == RED) // RXr 型
       {
         if (pu->left == u) // RLr 型
         {
@@ -183,13 +191,30 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
   {
     switch (type)
     {
+      // XYr
       case LLr:
-      case LRr:
+      case LRr: {
+        set_black_color(u->parent);
+        set_black_color(u->parent->parent->right);
+        set_red_color(u->parent->parent);
+        u = u->parent->parent;
+        break;
+      }
       case RLr:
-      case RRr:
-        {
-          break;
-        }
+      case RRr: {
+        set_black_color(u->parent);
+        set_black_color(u->parent->parent->left);
+        set_red_color(u->parent->parent);
+        u = u->parent->parent;
+        break;
+      }
+        // XYb
+      case LLb:
+      case LRb:
+      case RLb:
+      case RRb: {
+        break;
+      }
     }
   }
   // 根节点
