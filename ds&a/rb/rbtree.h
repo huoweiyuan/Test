@@ -192,29 +192,32 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
     switch (type)
     {
       // XYr
-      case LLr:
-      case LRr: {
-        set_black_color(u->parent);
-        set_black_color(u->parent->parent->right);
-        set_red_color(u->parent->parent);
-        u = u->parent->parent;
-        break;
-      }
-      case RLr:
-      case RRr: {
-        set_black_color(u->parent);
-        set_black_color(u->parent->parent->left);
-        set_red_color(u->parent->parent);
-        u = u->parent->parent;
-        break;
-      }
-        // XYb
-      case LLb:
-      case LRb:
-      case RLb:
-      case RRb: {
-        break;
-      }
+    case LLr:
+    case LRr:
+    {
+      set_black_color(u->parent);
+      set_black_color(u->parent->parent->right);
+      set_red_color(u->parent->parent);
+      u = u->parent->parent;
+      break;
+    }
+    case RLr:
+    case RRr:
+    {
+      set_black_color(u->parent);
+      set_black_color(u->parent->parent->left);
+      set_red_color(u->parent->parent);
+      u = u->parent->parent;
+      break;
+    }
+      // XYb
+    case LLb:
+    case LRb:
+    case RLb:
+    case RRb:
+    {
+      break;
+    }
     }
   }
   // 根节点
