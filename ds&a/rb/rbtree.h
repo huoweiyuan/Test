@@ -38,6 +38,10 @@ class RBTree
  private:
   struct rb_node_struct<T>* rb_insert_fix(struct rb_node_struct<T>*);
   // struct rb_node_struct<T>* rb_set_color(struct rb_node_struct<T>*, RBTYPE);
+  struct rb_node_struct<T>* left_left_rotation(struct rb_node_struct<T>*);
+  struct rb_node_struct<T>* left_right_rotation(struct rb_node_struct<T>*);
+  struct rb_node_struct<T>* right_right_rotation(struct rb_node_struct<T>*);
+  struct rb_node_struct<T>* right_left_rotation(struct rb_node_struct<T>*);
   void set_red_color(struct rb_node_struct<T>*);
   void set_black_color(struct rb_node_struct<T>*);
   bool is_red_color(struct rb_node_struct<T>*);
@@ -57,6 +61,34 @@ class RBTree
 // {
   
 // }
+
+template<typename T>
+struct rb_node_struct<T>* RBTree<T>::left_left_rotation(struct rb_node_struct<T> *u)
+{
+  // LLb型不平衡
+  return u;
+}
+
+template<typename T>
+struct rb_node_struct<T>* RBTree<T>::left_right_rotation(struct rb_node_struct<T> *u)
+{
+  // LRb型不平衡
+  return u;
+}
+
+template<typename T>
+struct rb_node_struct<T>* RBTree<T>::right_right_rotation(struct rb_node_struct<T> *u)
+{
+  // RRb型不平衡
+  return u;
+}
+
+template<typename T>
+struct rb_node_struct<T>* RBTree<T>::right_left_rotation(struct rb_node_struct<T> *u)
+{
+  // RLb 型不平衡
+  return u;
+}
 
 template<typename T>
 bool RBTree<T>::is_red_color(struct rb_node_struct<T>* u)
@@ -218,6 +250,8 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
     {
       break;
     }
+    default:
+      break;
     }
   }
   // 根节点
