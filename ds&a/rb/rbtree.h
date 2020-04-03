@@ -244,10 +244,23 @@ struct rb_node_struct<T>* RBTree<T>::rb_insert_fix(struct rb_node_struct<T> *u)
     }
       // XYb
     case LLb:
+    {
+      u = left_left_rotation(u->parent->parent);
+      break;
+    }
     case LRb:
+    {
+      u = left_right_rotation(u->parent->parent);
+      break;
+    }
     case RLb:
+    {
+      u = right_left_rotation(u->parent->parent);
+      break;
+    }
     case RRb:
     {
+      u = right_right_rotation(u->parent->parent);
       break;
     }
     default:
