@@ -68,6 +68,9 @@ namespace bfzq
     // LLb型不平衡
     struct rb_node_struct<T> *root = u->left;
     root->parent = u->parent;
+    if (root->parent != nullptr)
+      root->parent->left == u ?
+        root->parent->left = root : root->parent->right = root;
     if (root->right != nullptr)
     {
       u->left = root->right;
@@ -99,6 +102,9 @@ namespace bfzq
     // RRb型不平衡
     struct rb_node_struct<T> *root = u->right;
     root->parent = u->parent;
+    if (root->parent != nullptr)
+      root->parent->left == u ?
+        root->parent->left = root : root->parent->right = root;
     if (root->left != nullptr)
     {
       u->right = root->left;
@@ -113,7 +119,7 @@ namespace bfzq
     set_black_color(root);
     set_red_color(root->left);
     set_red_color(root->right);
-    return u;
+    return root;
   }
 
   template<typename T>
@@ -137,7 +143,7 @@ namespace bfzq
   template<typename T>
   RBTYPE RBTree<T>::get_u_type(struct rb_node_struct<T> *u)
   {
-    if (u->parent == nullptr || is_black_color(u->parent))
+    if (u->parent == nullptr || is_black_color(u->parent) || is_black_color(u))
     {
       return Other;
     }
