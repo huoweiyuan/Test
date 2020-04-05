@@ -78,7 +78,7 @@ namespace bfzq
       u->left = nullptr;
     }
     root->right = u;
-    root->right->parent = root;
+    u->parent = root;
     set_black_color(root);
     set_red_color(root->left);
     set_red_color(root->right);
@@ -97,6 +97,22 @@ namespace bfzq
   struct rb_node_struct<T>* RBTree<T>::right_right_rotation(struct rb_node_struct<T> *u)
   {
     // RRb型不平衡
+    struct rb_node_struct<T> *root = u->right;
+    root->parent = u->parent;
+    if (root->left != nullptr)
+    {
+      u->right = root->left;
+      u->right->parent = u;
+    }
+    else
+    {
+      u->right = nullptr;
+    }
+    root->left = u;
+    u->parent = root;
+    set_black_color(root);
+    set_red_color(root->left);
+    set_red_color(root->right);
     return u;
   }
 
