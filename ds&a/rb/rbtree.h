@@ -30,7 +30,7 @@ namespace bfzq
     RBTree() : root__(nullptr) {}
     ~RBTree()
     {
-      // TODO:
+      // TODO: free
     }
   public:
     void insert(const T&);
@@ -250,7 +250,7 @@ namespace bfzq
     set_red_color(u);
     u->element = element;
     u->parent = pu;
-    // TODO : change color or rotation
+    // change color or rotation
     root__ = rb_insert_fix(u);
   }
 
