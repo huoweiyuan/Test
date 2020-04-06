@@ -59,7 +59,7 @@ namespace bfzq
   // struct rb_node_struct<T>* RBTree<T>::rb_set_color(struct rb_node_struct<T>* u,
   //                                                   RBTYPE type)
   // {
-  
+
   // }
 
   template<typename T>
@@ -94,7 +94,6 @@ namespace bfzq
     // LRb型不平衡
     return u;
   }
-
 
   template<typename T>
   struct rb_node_struct<T>* RBTree<T>::right_right_rotation(struct rb_node_struct<T> *u)
@@ -330,6 +329,7 @@ namespace bfzq
   void RBTree<T>::erase(const T &element)
   {
     // TODO :
+
   }
 
   template<typename V>
