@@ -42,6 +42,8 @@ namespace bfzq
     struct rb_node_struct<T>* left_right_rotation(struct rb_node_struct<T>*);
     struct rb_node_struct<T>* right_right_rotation(struct rb_node_struct<T>*);
     struct rb_node_struct<T>* right_left_rotation(struct rb_node_struct<T>*);
+    struct rb_node_struct<T>* find_least_node(struct rb_node_struct<T>*);
+    struct rb_node_struct<T>* find_max_node(struct rb_node_struct<T>*);
     void set_red_color(struct rb_node_struct<T>*);
     void set_black_color(struct rb_node_struct<T>*);
     bool is_red_color(struct rb_node_struct<T>*);
@@ -126,6 +128,18 @@ namespace bfzq
   {
     // RLb 型不平衡
     return u;
+  }
+
+  template<typename T>
+  struct rb_node_struct<T>* RBTree<T>::find_least_node(struct rb_node_struct<T> *tree)
+  {
+    return nullptr;
+  }
+
+  template<typename T>
+  struct rb_node_struct<T>* RBTree<T>::find_max_node(struct rb_node_struct<T> *tree)
+  {
+    return nullptr;
   }
 
   template<typename T>
@@ -329,7 +343,27 @@ namespace bfzq
   void RBTree<T>::erase(const T &element)
   {
     // TODO :
+    struct rb_node_struct<T> *tree = root__;
+    while (tree != nullptr)
+    {
+      if (tree->element < element) tree = tree->right;
+      else if (tree->element > element) tree = tree->left;
+      else
+      {
+        if (tree->right != nullptr)
+        {
+          struct rb_node_struct<T> *least_node_right = nullptr;
+          least_node_right = find_least_node(tree->right);
 
+        }
+        else if (tree->left != nullptr)
+        {
+          struct rb_node_struct<T> *max_node_left = nullptr;
+          max_node_left = find_max_node(tree->left);
+
+        }
+      }
+    }
   }
 
   template<typename V>
