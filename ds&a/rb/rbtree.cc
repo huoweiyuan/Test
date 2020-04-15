@@ -14,7 +14,8 @@ void visit1(const rb_node_struct<double> *tree)
 void test1()
 {
   printf("test1\n");
-  RBTree<double> *test = new RBTree<double>();
+  RBTree<double> *test =
+    new RBTree<double>();
   test->insert(3);
   test->insert(2);
   test->insert(1);
