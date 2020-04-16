@@ -33,3 +33,6 @@
 GPATH
 GRTAGS
 GTAGS
+*.h#
+*.plist
+*.dSYM
