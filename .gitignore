@@ -36,3 +36,4 @@ GTAGS
 *.h#
 *.plist
 *.dSYM
+ds_a/rb/rbtree

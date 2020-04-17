@@ -374,7 +374,13 @@ void RBTree<T>::erase(const T &element)
       }
       else 
       {// match for neither left child nor right child is empty
-        
+        if (is_red_color(tree) == true)
+        {
+          tree->parent->left == tree ?
+            tree->parent->left = nullptr : tree->parent->right = nullptr;
+        }
+
+        delete tree;
       }
     }
   }
