@@ -25,6 +25,7 @@ void test1()
   test->insert(4);
   test->insert(5);
   test->insert(6);
+  test->erase(6);
   // test->insert(4);
   print_tree<rb_node_struct<double>>(get_tree(*test), visit1);
   printf("\n");
