@@ -3,86 +3,101 @@
 
 #include <stdlib.h>
 #include <assert.h>
-template<typename T>
-struct node_t
-{
-  T e;
-  struct node_t *next;
-};
 
 template<typename T>
-void node_init(node_t<T> *t)
-{
-  if (t != 0)
+class Stack
+{  
+ private:
+  struct node_t
   {
-    t.next = 0;
+    T e;
+    struct node_t *next;
+  };
+
+  void node_init(node_t *t)
+  {
+    if (t != NULL)
+    {
+      t.next = NULL;
+    }
   }
-}
 
-template<typename T>
-void node_init(node_t<T> *t, T e)
-{
-  if (t != 0)
+  void node_init(node_t *t, T e)
   {
-    t->e = e;
-    t->next = 0;
+    if (t != NULL)
+    {
+      t->e = e;
+      t->next = NULL;
+    }
   }
-}
 
-template<typename E>
-struct node_head_t
-{
-  long long count;
-  node_t<E> *next;
-};
-
-
-template<typename E>
-void stack_init(node_head_t<E> &head)
-{
-  head.count = 0;
-  head.next = 0;
-}
-
-template<typename E>
-void stack_deinit(node_head_t<E> &head)
-{
-  node_t<E> *node = head.next;
-  node_t<E> *next = 0;
-  while (node != 0)
+  struct node_head_t
   {
-    next = node->next;
+    long long count;
+    node_t *next;
+  };
+
+  void head_init(node_head_t *head)
+  {
+    if (head == NULL) return;
+    head->count = 0;
+    head->next = NULL;
+  }
+
+  void head_deinit(node_head_t *head)
+  {
+    if (head == NULL) return;
+    node_t *node = head->next;
+    node_t *next = NULL;
+    while (node != NULL)
+    {
+      next = node->next;
+      free(node);
+      node = next;
+    }
+    head->next = NULL;
+    head->count = 0;
+  }
+
+ public:
+  Stack()
+  {
+    __head = (node_head_t*)malloc(sizeof(node_head_t));
+    head_init(__head);
+  }
+
+  ~Stack()
+  {
+    head_deinit(__head);
+    free(__head);
+  }
+
+ public:  
+  void push(T e)
+  {
+    node_t *node = (node_t*)malloc(sizeof(node_t));
+    node_init(node, e);
+    if (__head->next != NULL)
+    {
+      node->next = __head->next;
+    }
+    __head->next = node;
+    __head->count++;
+  }
+
+  T pop()
+  {
+    assert(__head->next != NULL);
+    node_t *node = __head->next;
+    __head->next = node->next;    
+    T e;
+    e = node->e;
     free(node);
-    node = next;
+    __head->count--;
+    return e;
   }
-  head.next = 0;
-  head.count = 0;
-}
-
-template<typename T>
-void push(node_head_t<T> &head, T e)
-{
-  node_t<T> *node = (node_t<T>*)malloc(sizeof(node_t<T>));
-  node_init(node, e);
-  if (head.next != 0)
-  {
-    node->next = head.next;
-  }
-  head.next = node;
-  head.count++;
-}
-
-template<typename T>
-T pop(node_head_t<T> &head)
-{
-  assert(head.next != 0);
-  node_t<T> *node = head.next;
-  head.next = node->next;    
-  T e;
-  e = node->e;
-  free(node);
-  head.count--;
-  return e;
-}
+ private:
+  node_head_t *__head;
+};
 
 #endif // _STACK_H_
