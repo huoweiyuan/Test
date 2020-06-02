@@ -15,8 +15,8 @@ int main()
   stack.push(1);
   stack.push(3);
   stack.push(2);
-  printf("%d ", stack.pop());
-  printf("%d ", stack.pop());
-  printf("%d ", stack.pop());
+  printf("%d %d\n", stack.pop(), stack.count());
+  printf("%d %d\n", stack.pop(), stack.count());
+  printf("%d %d\n", stack.pop(), stack.count());
   return 0;
 }

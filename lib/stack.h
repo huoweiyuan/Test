@@ -97,6 +97,14 @@ class Stack
     __head->count--;
     return e;
   }
+  
+  long long count() const
+  {
+    if (__head == NULL)
+      return 0;
+    return __head->count;
+  }
+
  private:
   node_head_t *__head;
 };
