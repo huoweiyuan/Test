@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <signal.h>
 
+#include <assert.h>
+
 int fork_proc();
 pid_t pid;
 static void sigchld(int n)
@@ -64,6 +66,7 @@ int main()
     else // pid == 0
     {
       std::cout << "c :" << pid << std::endl;
+      assert(false);
     }
     sleep(2);
   }
