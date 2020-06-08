@@ -7,6 +7,11 @@
 static void sigchld(int n)
 {
   std::cout << "Get SIGCHLD" << n << std::endl;
+  // while(1)
+  // {
+  //   std::cout << "f : SIGCHLD" << n << std::endl;
+  //   sleep(2);
+  // }
 }
 
 int fork_proc(pid_t &pid)
