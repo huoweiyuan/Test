@@ -28,7 +28,7 @@ static void sigchld(int n)
 
 int fork_proc()
 {
-  pid = fork();
+  pid = fork(); // 复制上下文，形成新的进程
   if (pid == 0)
   {
     // sub proc
@@ -55,21 +55,17 @@ int main()
 {
   int r = fork_proc();
   if (r < 0) return -1;
-  if (pid > 0)
+  while (1)
   {
-    while(1)
+    if (pid > 0)
     {
       std::cout << "f :" << pid << std::endl;
-      sleep(2);
     }
-  }
-  else // pid == 0
-  {
-    while(1)
+    else // pid == 0
     {
       std::cout << "c :" << pid << std::endl;
-      sleep(2);
     }
+    sleep(2);
   }
   return 0;
 }
