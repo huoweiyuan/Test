@@ -7,11 +7,13 @@
 static void sigchld(int n)
 {
   std::cout << "Get SIGCHLD" << n << std::endl;
+  // 当前进程在信号函数处理完成之后才会继续执行
   // while(1)
   // {
   //   std::cout << "f : SIGCHLD" << n << std::endl;
   //   sleep(2);
   // }
+  
 }
 
 int fork_proc(pid_t &pid)
