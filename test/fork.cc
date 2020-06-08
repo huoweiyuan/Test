@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <signal.h>
 
-int fork_proc(pid_t &);
-
+int fork_proc();
+pid_t pid;
 static void sigchld(int n)
 {
   std::cout << "Get SIGCHLD" << n << std::endl;
@@ -15,8 +15,9 @@ static void sigchld(int n)
   //   std::cout << "f : SIGCHLD" << n << std::endl;
   //   sleep(2);
   // }
-  pid_t pid;
-  int r = fork_proc(pid);
+
+  // pid_t pid;
+  int r = fork_proc();
   if (r < 0)
     return;
   else
@@ -25,7 +26,7 @@ static void sigchld(int n)
   }
 }
 
-int fork_proc(pid_t &pid)
+int fork_proc()
 {
   pid = fork();
   if (pid == 0)
@@ -52,8 +53,7 @@ int fork_proc(pid_t &pid)
 
 int main()
 {
-  pid_t pid;
-  int r = fork_proc(pid);
+  int r = fork_proc();
   if (r < 0) return -1;
   if (pid > 0)
   {
@@ -63,7 +63,7 @@ int main()
       sleep(2);
     }
   }
-  else
+  else // pid == 0
   {
     while(1)
     {
