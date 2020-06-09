@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
         int clientfd =
           accept(listenfd, (struct sockaddr*)&rmt_addr, &size);
         ev.data.fd = clientfd;
-        ev.events = EPOLLIN | EPOLLOUT;
+        ev.events = EPOLLIN | EPOLLOUT | EPOLLET;
         epoll_ctl(epfd, EPOLL_CTL_ADD, clientfd, &ev);
       }
       else if (events[i].events & EPOLLIN)
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
       }
       else
       {
-        
+        printf("EPOLL OTHER\n");
       }
     }
   }
