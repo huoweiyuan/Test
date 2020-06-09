@@ -4,17 +4,27 @@
 
 #include <sys/epoll.h>
 
+#include <arpa/inet.h>
+#include <sys/socket.h>
+
+#include <string.h>
+
+#include <arpa/inet.h>
+
+#include <netinet/in.h>
 int main(int argc, char* argv[])
 {
   int listenfd = 0;
   listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
   struct sockaddr_in serveraddr;
-  bzero(&serveraddr, sizeof(struct sockaddr_in));
-  serveraddr.sin_famliy = AF_INET;
-  inet_aton("127.0.0.1", &(serveraddr.sin_addr));
+  memset(&serveraddr, 0, sizeof(struct sockaddr_in));
+  serveraddr.sin_family = AF_INET;
+  const char *host = "127.0.0.1";
+  // inet_aton(host, (struct in_addr*)&(serveraddr.sin_addr));
+  serveraddr.sin_addr.s_addr = inet_addr(host);
   serveraddr.sin_port = htons(5566);
-  bind(listenfd, (sockaddr*)&serveraddr, sizeof(serveraddr));
+  bind(listenfd, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
   listen(listenfd, 20);
 
   
