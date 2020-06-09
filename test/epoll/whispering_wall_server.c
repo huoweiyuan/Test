@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
   const char *host = "127.0.0.1";
   // inet_aton(host, (struct in_addr*)&(serveraddr.sin_addr));
   serveraddr.sin_addr.s_addr = inet_addr(host);
-  serveraddr.sin_port = htons(5566);
+  serveraddr.sin_port = htons(3366);
   bind(listenfd, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
   listen(listenfd, 20);
 
@@ -33,13 +33,34 @@ int main(int argc, char* argv[])
   if (epfd < 0) return -1;
 
   struct epoll_event ev;
+  struct epoll_event events[1024];
   ev.data.fd = listenfd;
   ev.events = EPOLLIN | EPOLLOUT;
   epoll_ctl(epfd, EPOLL_CTL_ADD, listenfd, &ev);
 
+  int epnum = 0;
   while (1)
   {
-    // TODO
+    epnum = epoll_wait(epfd, events, 1024, 5);
+    for (int i = 0; i < epnum; i++)
+    {
+      if (events[i].data.fd == listenfd)
+      {
+        
+      }
+      else if (events[i].events & EPOLLIN)
+      {
+        
+      }
+      else if (events[i].events & EPOLLOUT)
+      {
+        
+      }
+      else
+      {
+        
+      }
+    }
   }
   return 0;
 }
