@@ -27,7 +27,6 @@ int main(int argc, char* argv[])
   bind(listenfd, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
   listen(listenfd, 20);
 
-  
   int epfd; // for epoll
   epfd = epoll_create(1024);
   if (epfd < 0) return -1;
@@ -39,6 +38,7 @@ int main(int argc, char* argv[])
   epoll_ctl(epfd, EPOLL_CTL_ADD, listenfd, &ev);
 
   int epnum = 0;
+  char buf[1024][256];
   while (1)
   {
     epnum = epoll_wait(epfd, events, 1024, 5);
@@ -46,15 +46,33 @@ int main(int argc, char* argv[])
     {
       if (events[i].data.fd == listenfd)
       {
-        
+        printf("listen\n");
+        struct sockaddr_in rmt_addr;
+        int clientfd =
+          accept(listenfd, (struct sockaddr*)&rmt_addr, sizeof(rmt_addr));
+        ev.data.fd = clientfd;
+        epoll_ctl(epfd, EPOLL_CTL_ADD, clientfd, &ev);
       }
       else if (events[i].events & EPOLLIN)
       {
-        
+        printf("EPOLLIN\n");
+        int len = recv(events[i].data.fd, buf[i], sizeof(buf[i]), 0);
+        if (len < 0)
+        {
+          
+        }
+        else if (len > 0)
+        {
+          len = send(events[i].data.fd, buf[i], len, 0);
+          if (len < 0)
+          {
+            
+          }
+        }
       }
       else if (events[i].events & EPOLLOUT)
       {
-        
+        printf("EPOLLOUT\n");
       }
       else
       {
