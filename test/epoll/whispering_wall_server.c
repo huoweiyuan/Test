@@ -48,9 +48,11 @@ int main(int argc, char* argv[])
       {
         printf("listen\n");
         struct sockaddr_in rmt_addr;
+        size_t size = sizeof(rmt_addr);
         int clientfd =
-          accept(listenfd, (struct sockaddr*)&rmt_addr, sizeof(rmt_addr));
+          accept(listenfd, (struct sockaddr*)&rmt_addr, &size);
         ev.data.fd = clientfd;
+        ev.events = EPOLLIN | EPOLLOUT;
         epoll_ctl(epfd, EPOLL_CTL_ADD, clientfd, &ev);
       }
       else if (events[i].events & EPOLLIN)
