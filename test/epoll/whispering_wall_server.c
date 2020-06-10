@@ -15,6 +15,7 @@
 
 #include <unistd.h>
 
+#include <errno.h>
 int main(int argc, char* argv[])
 {
   int listenfd = 0;
@@ -55,7 +56,7 @@ int main(int argc, char* argv[])
         int clientfd =
           accept(listenfd, (struct sockaddr*)&rmt_addr, &size);
         ev.data.fd = clientfd;
-        ev.events = EPOLLIN;
+        ev.events = EPOLLIN | EPOLLET;
         epoll_ctl(epfd, EPOLL_CTL_ADD, clientfd, &ev);
       }
       else if (events[i].events & EPOLLIN)
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
         {
           printf("get : %s\n", buf[i]);
           ev.data.fd = events[i].data.fd;
-          ev.events = EPOLLOUT;
+          ev.events = EPOLLOUT | EPOLLET;
           epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);
         }
         else
@@ -90,13 +91,21 @@ int main(int argc, char* argv[])
         int len = send(events[i].data.fd, buf[i], strlen(buf[i]), 0);
         if (len < 0)
         {
-          printf("Send error\n");  
+          printf("Send error\n");
+          if (errno == EAGAIN)
+          {
+            ev.data.fd = events[i].data.fd;
+            ev.events = EPOLLIN | EPOLLET;
+            epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);   
+      
+          }
         }
-      
-        ev.data.fd = events[i].data.fd;
-        ev.events = EPOLLIN;
-        epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);
-      
+        else
+        {
+          ev.data.fd = events[i].data.fd;
+          ev.events = EPOLLIN | EPOLLET;
+          epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);
+        }
       }
       else
       {
