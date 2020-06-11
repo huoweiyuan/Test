@@ -16,6 +16,18 @@
 #include <unistd.h>
 
 #include <errno.h>
+
+static void str_move_forward(char *str, int distance)
+{
+  int idx = distance;
+  while (*(str + idx) != '\0')
+  {
+    *(str + idx - distance) = *(str + idx);
+    idx++;
+  }
+  *(str + idx - distance) = '\0';
+}
+
 int main(int argc, char* argv[])
 {
   int listenfd = 0;
@@ -94,11 +106,19 @@ int main(int argc, char* argv[])
           printf("Send error\n");
           if (errno == EAGAIN)
           {
+            printf("EAGAIN\n");
             ev.data.fd = events[i].data.fd;
-            ev.events = EPOLLIN | EPOLLET;
-            epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);   
-      
+            ev.events = EPOLLOUT | EPOLLET;
+            epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);
           }
+        }
+        else if (len < strlen(buf[i]))
+        {
+          printf("len < strlen(buf[i]) %d\n", errno);
+          str_move_forward(buf[i], len);
+          ev.data.fd = events[i].data.fd;
+          ev.events = EPOLLOUT | EPOLLET;
+          epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);   
         }
         else
         {
