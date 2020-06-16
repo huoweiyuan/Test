@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
           epoll_ctl(epfd, EPOLL_CTL_DEL, events[i].data.fd, &ev);
           close(events[i].data.fd);
         }
-        }
+      }
       else if (events[i].events & EPOLLOUT)
       {
         printf("EPOLLOUT\n");
