@@ -49,6 +49,13 @@ namespace gc
       deinit();
     }
 
+  public:
+    void push(const T &element)
+    {
+      unsigned int level = ;
+
+    }
+
   };
 };
 

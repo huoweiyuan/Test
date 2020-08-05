@@ -78,13 +78,13 @@ int main(int argc, char* argv[])
         if (len < 0)
         {
           printf("Read error\n");
-          
+
         }
         else if (len > 0)
         {
           printf("get : %s\n", buf[i]);
           ev.data.fd = events[i].data.fd;
-          ev.events = EPOLLOUT | EPOLLET;
+5o          ev.events = EPOLLOUT | EPOLLET;
           epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);
         }
         else
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
           str_move_forward(buf[i], len);
           ev.data.fd = events[i].data.fd;
           ev.events = EPOLLOUT | EPOLLET;
-          epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);   
+          epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);
         }
         else
         {
