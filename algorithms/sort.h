@@ -8,7 +8,7 @@ class Sort
  public:
   virtual void sort(vector<T> a) = 0;
 
-  bool less(T v, T w)
+  bool less(T v, T w) const
   {
     return v < w;
   }
@@ -21,7 +21,7 @@ class Sort
     a[j] = t;
   }
 
-  void show(vector<T> a)
+  void show(vector<T> a) const
   {
     for (unsigned i = 0; i < a.size(); i++)
     {
@@ -30,11 +30,11 @@ class Sort
     std::cout << std::endl;
   }
 
-  bool isSort(vector<T> a)
+  bool isSorted(vector<T> a) const
   {
     for (unsigned i = 1; i < a.size(); i++)
     {
-      if (less(a[i] < a[i - 1])) return false;
+      if (less(a[i], a[i - 1])) return false;
     }
     return true;
   }
