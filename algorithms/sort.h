@@ -6,7 +6,7 @@ template <typename T>
 class Sort
 {
  public:
-  virtual void sort(vector<T> a) = 0;
+  virtual void sort(std::vector<T> a) = 0;
 
   bool less(T v, T w) const
   {
@@ -14,14 +14,14 @@ class Sort
   }
 
   /*exchange a[i] and a[j]*/
-  void exch(vector<T> a, const int &i, const int &j)
+  void exch(std::vector<T> a, const int &i, const int &j)
   {
     T t = a[i];
     a[i] = a[j];
     a[j] = t;
   }
 
-  void show(vector<T> a) const
+  void show(std::vector<T> a) const
   {
     for (unsigned i = 0; i < a.size(); i++)
     {
@@ -30,7 +30,7 @@ class Sort
     std::cout << std::endl;
   }
 
-  bool isSorted(vector<T> a) const
+  bool isSorted(std::vector<T> a) const
   {
     for (unsigned i = 1; i < a.size(); i++)
     {
