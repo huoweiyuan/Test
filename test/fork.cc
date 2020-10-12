@@ -32,6 +32,7 @@ pid_t pid;
 int fork_proc(bool register_sigal_function);
 void sigacchld(int n, siginfo_t *sig, void *p)
 {
+  wait(NULL);
   // 要让siginfo_t生效，需要设置SA_SIGINFO
   std::cout << "SIGCHLD child pid " << sig->si_pid << std::endl;
   int r = fork_proc(false);
