@@ -44,6 +44,21 @@ class Leetcode
     }
     return max;
   }
+
+  int climbStairs(int n)
+  {
+    int max1 = 1;
+    int max2 = 2;
+    if (n == 2) return max2;
+    if (n == 1) return max1;
+    for (int i = 3; i <= n; i++)
+    {
+      int tmp = max2;
+      max2 = max2 + max1;
+      max1 = tmp;
+    }
+    return max2;
+  }
 };
 
 #endif // __LEETCODE_H__
