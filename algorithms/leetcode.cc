@@ -9,6 +9,20 @@ TEST(LEETCODE, maxSubArray0)
   EXPECT_EQ(result, leetcode.maxSubArray(input));
 }
 
+TEST(LEETCODE, climbStairs0)
+{
+  Leetcode leetcode;
+  EXPECT_EQ(2,leetcode.climbStairs(2));
+}
+
+
+
+TEST(LEETCODE, climbStairs1)
+{
+  Leetcode leetcode;
+  EXPECT_EQ(3,leetcode.climbStairs(3));
+}
+
 
 int main(int argc, char **argv)
 {
