@@ -15,8 +15,6 @@ TEST(LEETCODE, climbStairs0)
   EXPECT_EQ(2,leetcode.climbStairs(2));
 }
 
-
-
 TEST(LEETCODE, climbStairs1)
 {
   Leetcode leetcode;
@@ -24,6 +22,22 @@ TEST(LEETCODE, climbStairs1)
 }
 
 
+TEST(LEETCODE, maxProfit0)
+{
+  Leetcode leetcode;
+  vector<int> input = {7,1,5,3,6,4};
+  EXPECT_EQ(5, leetcode.maxProfit(input));
+}
+
+TEST(LEETCODE, maxProfit1)
+{
+  Leetcode leetcode;
+  vector<int> input = {7,6,4,3,1};
+  EXPECT_EQ(0, leetcode.maxProfit(input));
+}
+
+
+// ====
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
