@@ -131,31 +131,46 @@ class Leetcode
     链接：https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii
     著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
   */
+  /*
+    // time out
   int maxProfit1(vector<int> &prices)
   {
+   
+    int max = 0;
     vector<int> max_arr;
-    max_arr.reserve(prices.size());
+    // max_arr.reserve(prices.size());
     int sell_idx = prices.size() - 1;
-    for (int midx_idx = prices.size() - 1; 0 <= midx_idx; mid_idx--)
+    for (int mid_idx = prices.size() - 1; 0 <= mid_idx; mid_idx--)
     {
-      int tmp = prices[sell_idx] - prices[midx_idx];
-      if(tmp <= 0) buy_idx = i;
-      else if (tmp > max1) max1 = tmp;
-
+      int tmp = prices[sell_idx] - prices[mid_idx];
+      if(tmp <= 0)
+      {
+	sell_idx = mid_idx;
+      }
+      else if (tmp > max)
+      {
+	max = tmp;	
+      }
+      // max_arr[prices.size() - 1 - mid_idx] = max;
+      max_arr.insert(max_arr.begin(), max);
     }
-    int max1, max2;
-    max1 = max2 = 0;
-    
+    int max1 = 0;
+    max = 0;
     int buy_idx = 0;
     for (int mid_idx = 0; mid_idx < prices.size(); mid_idx++)
     {
       int tmp = prices[mid_idx] - prices[buy_idx];
-      if(tmp <= 0) buy_idx = i;
+      if(tmp <= 0) buy_idx = mid_idx;
       else if (tmp > max1) max1 = tmp;
-      
-
+      if (max1 + max_arr[mid_idx] > max) max = max1 + max_arr[mid_idx];
     }
-    return max1 + max2;
+    return max;
+  }
+  */
+
+  int maxProfit1(vector<int> &prices)
+  {
+    return 0;
   }
 };
 

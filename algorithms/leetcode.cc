@@ -34,7 +34,7 @@ TEST(LEETCODE, maxProfit1)
   EXPECT_EQ(6, leetcode.maxProfit1(input0));
   vector<int> input1 = {1,2,3,4,5};
   EXPECT_EQ(4, leetcode.maxProfit1(input1));
-  vector<int> input2 = {1,2,3,4,5};
+  vector<int> input2 = {7,6,4,3,1};
   EXPECT_EQ(0, leetcode.maxProfit1(input2));
 }
 // ====
