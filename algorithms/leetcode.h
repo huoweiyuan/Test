@@ -4,7 +4,20 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <algorithm>
+#include <iostream>
+
 using namespace std;
+
+struct ListNode
+{
+  int val;
+  ListNode *next;
+  ListNode() : val(0), next(nullptr) {}
+  ListNode(int x) : val(x), next(nullptr) {}
+  ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
 class Leetcode
 {
  public:
@@ -182,6 +195,46 @@ class Leetcode
 
   // }
 
+
+  /*
+    给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+
+    有效字符串需满足：
+
+    左括号必须用相同类型的右括号闭合。
+    左括号必须以正确的顺序闭合。
+
+    注意空字符串可被认为是有效字符串。
+
+    示例 1:
+
+    输入: "()"
+    输出: true
+
+    示例 2:
+
+    输入: "()[]{}"
+    输出: true
+
+    示例 3:
+
+    输入: "(]"
+    输出: false
+
+    示例 4:
+
+    输入: "([)]"
+    输出: false
+
+    示例 5:
+
+    输入: "{[]}"
+    输出: true
+
+    来源：力扣（LeetCode）
+    链接：https://leetcode-cn.com/problems/valid-parentheses
+    著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+  */
   bool isValid(string s)
   {
     stack<char> brackets;
@@ -200,6 +253,173 @@ class Leetcode
     }
     return brackets.empty();
   }
+
+  /*
+    将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+
+ 
+
+    示例：
+
+    输入：1->2->4, 1->3->4
+    输出：1->1->2->3->4->4
+
+    来源：力扣（LeetCode）
+    链接：https://leetcode-cn.com/problems/merge-two-sorted-lists
+    著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+  */
+
+  /**
+   * Definition for singly-linked list.
+   * struct ListNode {
+   *     int val;
+   *     ListNode *next;
+   *     ListNode() : val(0), next(nullptr) {}
+   *     ListNode(int x) : val(x), next(nullptr) {}
+   *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+   * };
+   */
+  ListNode* mergeTwoList(ListNode *l1, ListNode *l2)
+  {
+    ListNode *head, *end, *t1, *t2;
+    t1 = l1;
+    t2 = l2;
+    head = end = nullptr;
+    while (t1 != nullptr && t2 != nullptr)
+    {
+      if (t1->val < t2->val)
+      {
+	if (head == nullptr)
+	{
+	  end = head = new ListNode(t1->val);
+	}
+	else
+	{
+	  end->next = new ListNode(t1->val);
+	  end = end->next;
+	}
+	t1 = t1->next;
+      }
+      else
+      {
+	if (head == nullptr)
+	{
+	  end = head = new ListNode(t2->val);
+	}
+	else
+	{
+	  end->next = new ListNode(t2->val);
+	  end = end->next;
+	}
+	t2 = t2->next;
+      }
+    }
+
+    while (t1 != nullptr)
+    {
+      if (head == nullptr)
+      {
+	end = head = new ListNode(t1->val);
+      }
+      else
+      {
+	end->next = new ListNode(t1->val);
+	end = end->next;
+      }
+      t1 = t1->next;
+      
+    }
+
+    while (t2 != nullptr)
+    {
+      if (head == nullptr)
+      {
+	end = head = new ListNode(t2->val);
+      }
+      else
+      {
+	end->next = new ListNode(t2->val);
+	end = end->next;
+      }
+      t2 = t2->next;
+            
+    }
+    return head;
+  }
+
+  /*
+    给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
+
+    注意：答案中不可以包含重复的三元组。
+
+ 
+
+    示例：
+
+    给定数组 nums = [-1, 0, 1, 2, -1, -4]，
+
+    满足要求的三元组集合为：
+    [
+    [-1, 0, 1],
+    [-1, -1, 2]
+    ]
+
+
+    来源：力扣（LeetCode）
+    链接：https://leetcode-cn.com/problems/3sum
+    著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+   */
+  /// 双指针法
+  vector<vector<int>> threeSum(vector<int>& nums)
+  {
+    vector<vector<int>> out;
+    /// skip input size < 3
+    if (nums.size() < 3) 
+      return out;
+    sort(nums.begin(), nums.end());
+    // for(auto p : nums)
+    //   cout << p << endl;
+
+    for (int i = 0; i < nums.size() - 2; i++)
+    {
+      if (nums[i] > 0) break;
+      if (i > 0 && nums[i] == nums[i - 1]) continue;
+      int r = nums.size() - 1;      
+      int l = i + 1;
+      while (l < r)
+      {
+	if (l >= r) break;
+	if (nums[i] + nums[l] > 0) break;
+	int tmp = nums[i] + nums[l] + nums[r];
+	if (tmp > 0)
+	{
+	  r--;
+	}
+	else if (tmp < 0)
+	{
+	  l++;
+	}
+	else
+	{
+	  out.push_back({nums[i], nums[l], nums[r]});
+	  while (l < r && nums[l] == nums[l + 1]) l++;
+	  while (l < r && nums[r] == nums[r - 1]) r--;
+
+	  l++;
+	  r--;
+	}
+      }
+    }
+    for(auto p : out)
+    {
+      cout << "{";
+      for (auto p2 : p)
+	cout << p2 << ",";
+      cout << "},";
+    }
+    return out;
+  }
+  
 };
 
 #endif // __LEETCODE_H__
