@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <stack>
 using namespace std;
 class Leetcode
 {
@@ -181,7 +182,24 @@ class Leetcode
 
   // }
 
-  
+  bool isValid(string s)
+  {
+    stack<char> brackets;
+    for (int i = 0; i < s.length(); i++)
+    {
+      if (brackets.empty()) brackets.push(s[i]);
+      else if (brackets.top() == s[i] - 1 ||
+	       brackets.top() == s[i] - 2)
+      {
+	brackets.pop();
+      }
+      else
+      {
+	brackets.push(s[i]);
+      }
+    }
+    return brackets.empty();
+  }
 };
 
 #endif // __LEETCODE_H__

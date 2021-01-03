@@ -42,6 +42,26 @@ TEST(LEETCODE, maxProfit1)
   EXPECT_EQ(99995, leetcode.maxProfit1(input3));
 }
 
+TEST(LEETCODE, isValid)
+{
+	Leetcode lc;
+	
+	string i1 = "()";
+	EXPECT_EQ(true, lc.isValid(i1));
+
+	string i2 = "()[]{}";
+	EXPECT_EQ(true, lc.isValid(i2));
+	
+	string i3 = "(]";
+	EXPECT_EQ(false, lc.isValid(i3));
+	
+	string i4 = "([)]";
+	EXPECT_EQ(false, lc.isValid(i4));
+	
+	string i5 = "{[]}";
+	EXPECT_EQ(true, lc.isValid(i5));
+}
+
 // ====
 int main(int argc, char **argv){
   ::testing::InitGoogleTest(&argc, argv);
