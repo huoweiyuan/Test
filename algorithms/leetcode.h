@@ -28,7 +28,7 @@ class Leetcode
      来源：力扣（LeetCode）
      链接：https://leetcode-cn.com/problems/maximum-subarray
      著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-   */
+  */
   int maxSubArray(vector<int>& nums)
   {
     if (nums.empty()) return 0;
@@ -131,14 +131,11 @@ class Leetcode
     链接：https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii
     著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
   */
-  /*
-    // time out
+
   int maxProfit1(vector<int> &prices)
   {
-   
     int max = 0;
-    vector<int> max_arr;
-    // max_arr.reserve(prices.size());
+    vector<int> max_arr(prices.size(), 0);
     int sell_idx = prices.size() - 1;
     for (int mid_idx = prices.size() - 1; 0 <= mid_idx; mid_idx--)
     {
@@ -151,8 +148,7 @@ class Leetcode
       {
 	max = tmp;	
       }
-      // max_arr[prices.size() - 1 - mid_idx] = max;
-      max_arr.insert(max_arr.begin(), max);
+      max_arr[mid_idx] = max;
     }
     int max1 = 0;
     max = 0;
@@ -166,12 +162,26 @@ class Leetcode
     }
     return max;
   }
-  */
 
-  int maxProfit1(vector<int> &prices)
-  {
-    return 0;
-  }
+  // int maxProfit1(vector<int> &prices)
+  // {
+  //   if (prices.size() == 0) return 0;
+  //   vector<vector<int>> dp(prices.size(), vector<int>(5, 0));
+  //   dp[0][0] = 0;
+  //   dp[0][1] = -prices[0];
+  //   dp[0][3] = -prices[0];
+  //   for (int i = 1; i < prices.size(); i++) {
+  //     dp[i][0] = dp[i - 1][0];
+  //     dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+  //     dp[i][2] = max(dp[i - 1][2], dp[i - 1][1] + prices[i]);
+  //     dp[i][3] = max(dp[i - 1][3], dp[i - 1][2] - prices[i]);
+  //     dp[i][4] = max(dp[i - 1][4], dp[i - 1][3] + prices[i]);
+  //   }
+  //   return dp[prices.size() - 1][4];
+
+  // }
+
+  
 };
 
 #endif // __LEETCODE_H__
