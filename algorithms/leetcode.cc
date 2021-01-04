@@ -108,7 +108,23 @@ TEST(LEETCODE,isBalanced)
   right = root;
   root = new TreeNode(3, left, right);
   EXPECT_EQ(true, lc.isBalanced(root));
-  // TODO: free
+
+	left = new TreeNode(4);
+	right = new TreeNode(4);
+	root = new TreeNode(3, left, right);
+	
+	left = root;
+	right = new TreeNode(3);
+	root = new TreeNode(2, left, right);
+	
+	left = root;
+	right = new TreeNode(2);
+	root = new TreeNode(1, left, right);
+	EXPECT_EQ(false, lc.isBalanced(root));
+
+	root = nullptr;
+	EXPECT_EQ(true, lc.isBalanced(root));
+	// TODO: free
   
 }
 
