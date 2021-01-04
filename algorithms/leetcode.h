@@ -18,6 +18,18 @@ struct ListNode
   ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+
+struct TreeNode
+{
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode() : val(0), left(nullptr), right(nullptr) {}
+  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+  TreeNode(int x , TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+
 class Leetcode
 {
  public:
@@ -410,14 +422,25 @@ class Leetcode
 	}
       }
     }
-    for(auto p : out)
-    {
-      cout << "{";
-      for (auto p2 : p)
-	cout << p2 << ",";
-      cout << "},";
-    }
+    // for(auto p : out)
+    // {
+    //   cout << "{";
+    //   for (auto p2 : p)
+    // 	cout << p2 << ",";
+    //   cout << "},";
+    // }
     return out;
+  }
+
+  
+  /*
+    110, 平衡二叉树
+    找出左右子树高度差不超过1的树
+   */
+  bool isBalanced(TreeNode *root)
+  {
+    
+    return true;
   }
   
 };
