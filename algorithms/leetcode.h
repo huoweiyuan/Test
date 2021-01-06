@@ -437,10 +437,30 @@ class Leetcode
     110, 平衡二叉树
     找出左右子树高度差不超过1的树
    */
+  bool isBalanced(TreeNode *root, int &hight)
+  {
+    if (root == nullptr) return true;
+    int left_hight, right_hight, balance;
+    left_hight = right_hight = 0;
+
+    if (root->left != nullptr)
+      if (isBalanced(root->left, left_hight) != true) return false;
+
+    if (root->right != nullptr)
+      if (isBalanced(root->right, right_hight) != true) return false;
+
+    hight = left_hight > right_hight? left_hight + 1: right_hight + 1;
+    
+    balance = left_hight - right_hight;
+    if (balance < -1 || balance > 1)
+      return false;
+    return true;
+  }
+  
   bool isBalanced(TreeNode *root)
   {
-    
-    return true;
+    int hight = 0;
+    return isBalanced(root, hight);
   }
   
 };
