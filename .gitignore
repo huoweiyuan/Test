@@ -39,3 +39,5 @@ GTAGS
 ds_a/rb/rbtree
 test/epoll/whisper
 test/epoll/people
+*~
+.*

@@ -128,6 +128,18 @@ TEST(LEETCODE,isBalanced)
   
 }
 
+TEST(LEETCODE, threeSumClosest)
+{
+  Leetcode lc;
+  vector<int> nums;
+  int target;
+
+  nums = {-1, 2, 1, -4};
+  target = 1;
+  EXPECT_EQ(2, lc.threeSumClosest(nums, target));
+}
+
+
 // ====
 int main(int argc, char **argv){
   ::testing::InitGoogleTest(&argc, argv);

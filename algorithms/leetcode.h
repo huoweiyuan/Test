@@ -432,7 +432,6 @@ class Leetcode
     return out;
   }
 
-  
   /*
     110, 平衡二叉树
     找出左右子树高度差不超过1的树
@@ -463,6 +462,30 @@ class Leetcode
     return isBalanced(root, hight);
   }
   
+  int threeSumClosest(vector<int> &nums, int target)
+  {
+    int ret = 0;
+    int min = INT_MAX;
+    ///    sort(nums.begin(), nums.end());
+    for (int i = 0; i < nums.size() - 2; i++)
+    {
+      for (int j = i + 1; j < nums.size() - 1; j++)
+      {
+	for (int k = j + 1; k < nums.size(); k++)
+	{
+	  int tmp = nums[i] + nums[j] + nums[k];
+	  int min1 = abs(tmp - target);
+	  if (min1 < min)
+	  {
+	    min = min1;
+	    ret = tmp;
+	  }
+	}
+      }
+    }
+    return ret;
+  }
+
 };
 
 #endif // __LEETCODE_H__
