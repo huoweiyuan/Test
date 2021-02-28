@@ -9,12 +9,15 @@ class SelectionSort : public Sort<IntComparable>
  public:
   void sort(std::vector<IntComparable> &a)
   {
-    for (int i = 1; i < a.size(); i++)
+    for (int i = 0; i < a.size(); i++)
     {
-      for (int j = i; j > 0; j--)
+      int min = i;
+      for (int j = i + 1; j < a.size(); j++)
       {
-	if (a[j - 1] > a[j]) exch(a, j - 1, j);
+	if (a[j] < a[min]) min = j;
       }
+      if (min != i)
+	exch(a, i, min);
     }
   }
 };
