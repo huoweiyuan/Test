@@ -2,6 +2,7 @@
 #include "quick_sort.h"
 #include "InsertSort.h"
 #include "SelectionSort.h"
+#include "ShellSort.h"
 //#include "sort.h"
 using namespace std;
 int main()
@@ -21,7 +22,11 @@ int main()
   SelectionSort ss;
   ss.sort(datas);
   cout << ss.isSorted(datas) << endl;
-  ss.sort(datas);
   ss.show(datas);
+
+  ShellSort ss1;
+  ss1.sort(datas);
+  cout << ss1.isSorted(datas) << endl;
+  ss1.show(datas);
   return 0;
 }
