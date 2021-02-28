@@ -5,6 +5,9 @@
 class IntComparable : private Comparable<IntComparable>
 {
  public:
+  IntComparable():data(0) {}
+  IntComparable(int d):data(d) {}
+ public:
   int data;
  public:
   bool operator==(const IntComparable &other) const

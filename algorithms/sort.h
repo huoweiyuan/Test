@@ -17,7 +17,7 @@ template <typename T>
 class Sort
 {
  public:
-  // virtual void sort(std::vector<Comparable<T> > &a) = 0;
+  virtual void sort(std::vector<T> &a) = 0;
 
   bool less(const T &v, const T &w) const
   {
