@@ -486,6 +486,32 @@ class Leetcode
     return ret;
   }
 
+  /*
+    94. 二叉树的中序遍历
+
+    给定树的跟节点，返回其中序遍历
+    1. root = [1, null, 2, 3]
+    out = [1,3,2]
+    
+    2. root = []
+    out = []
+
+    3. root = [1]
+    out = [1]
+
+    4. root = [1, 2]
+    out = [2, 1]
+
+    5. root = [1, null, 2]
+    out = [1, 2]
+
+    简单模式:递归，进阶模式：迭代算法
+   */
+  vector<int> midprint(vector<int> tree)
+  {
+    
+  }
+
 };
 
 #endif // __LEETCODE_H__
