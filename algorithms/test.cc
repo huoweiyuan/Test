@@ -1,6 +1,7 @@
 //#include "comparable.h"
 #include "quick_sort.h"
 #include "InsertSort.h"
+#include "SelectionSort.h"
 //#include "sort.h"
 using namespace std;
 int main()
@@ -16,5 +17,11 @@ int main()
   is.sort(datas);
   cout << is.isSorted(datas) << endl;
   is.show(datas);
+
+  SelectionSort ss;
+  ss.sort(datas);
+  cout << ss.isSorted(datas) << endl;
+  ss.sort(datas);
+  ss.show(datas);
   return 0;
 }
