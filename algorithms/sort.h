@@ -1,27 +1,38 @@
 #ifndef _SORT_H_
-#default _SORT_H_
+#define _SORT_H_
 #include <vector>
+#include <iostream>
+template <typename T>
+class Comparable
+{
+ public:
+  virtual bool operator==(const T&) const = 0;
+  virtual bool operator>(const T&) const = 0;
+  virtual bool operator>=(const T&) const = 0;
+  virtual bool operator<(const T&) const = 0;
+  virtual bool operator<=(const T&) const = 0;
+};
 
 template <typename T>
 class Sort
 {
  public:
-  virtual void sort(std::vector<T> a) = 0;
+  virtual void sort(std::vector<Comparable<T> > &a) = 0;
 
-  bool less(T v, T w) const
+  bool less(const Comparable<T> &v, const Comparable<T> &w) const
   {
     return v < w;
   }
 
   /*exchange a[i] and a[j]*/
-  void exch(std::vector<T> a, const int &i, const int &j)
+  void exch(std::vector<Comparable<T> > &a, int i, int j)
   {
     T t = a[i];
     a[i] = a[j];
     a[j] = t;
   }
 
-  void show(std::vector<T> a) const
+  void show(const std::vector<Comparable<T> > &a) const
   {
     for (unsigned i = 0; i < a.size(); i++)
     {
@@ -30,7 +41,7 @@ class Sort
     std::cout << std::endl;
   }
 
-  bool isSorted(std::vector<T> a) const
+  bool isSorted(const std::vector<Comparable<T> > &a) const
   {
     for (unsigned i = 1; i < a.size(); i++)
     {
