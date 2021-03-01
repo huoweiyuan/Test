@@ -15,9 +15,9 @@ class ShellSort : public Sort<IntComparable>
     while (h < n / 3) h = 3 * n + 1;
     while (h >= 1)
     {
-      for (int i = h; i < n; i++)
+      for (int i = h; i < n; i++) // h 个子序列之间递增切换
       {
-	for (int j = i; j > h && a[j - h] > a[j]; j-=h)
+	for (int j = i; j >= h && a[j - h] > a[j]; j-=h)
 	{
 	  exch(a, j - h, j);
 	}
