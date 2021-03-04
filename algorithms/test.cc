@@ -4,6 +4,8 @@
 #include "SelectionSort.h"
 #include "ShellSort.h"
 #include "MergeSort.h"
+#include "PriorityQueue.h"
+#include "AlgUtil.h"
 
 using namespace std;
 int main()
@@ -42,5 +44,22 @@ int main()
   ms.sort(datas4);
   cout << ms.isSorted(datas4) << endl;
   ms.show(datas4);
+
+
+  PriorityQueue<IntComparable> pq;
+  vector<IntComparable> datas5 = {2, 2, 1, 1, 3, 3, 10 ,3, 2, 6};
+  vector<IntComparable>::iterator iter = datas5.begin();
+  while (iter != datas5.end())
+  {
+    pq.insert(*iter);
+    if (pq.size() > 5)
+      cout << "Delete Max: " << pq.delMax() << endl;
+    iter++;
+  }
+  
+  vector<IntComparable> show_vector;
+  while (!pq.empty()) show_vector.push_back(pq.delMax());
+  show<IntComparable>(show_vector);
+  
   return 0;
 }
