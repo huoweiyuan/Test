@@ -31,7 +31,6 @@ template <typename Key>
 PriorityQueue<Key>::PriorityQueue()
 {
   __queue.reserve(INITIAL_COUNTS);
-  // __max = INITAIL_COUNTS;
 }
 
 template <typename Key>
@@ -66,7 +65,6 @@ Key PriorityQueue<Key>::max()
 {
   return __queue[0];
 }
-
 
 template <typename Key>
 Key PriorityQueue<Key>::delMax()
@@ -112,7 +110,5 @@ void PriorityQueue<Key>::sink(int idx)
     idx = j;
   }
 }
-
-
 
 #endif // __PRIORITYQUEUE_H__

@@ -7,6 +7,8 @@
 #include "PriorityQueue.h"
 #include "AlgUtil.h"
 #include "HeapSort.h"
+#include "BucketSort.h"
+
 using namespace std;
 int main()
 {
@@ -66,6 +68,12 @@ int main()
   hs.sort(datas6);
   cout << hs.isSorted(datas6) << endl;
   hs.show(datas6);
+
+  vector<IntComparable> datas7 = {2, 2, 1, 1, 3, 3, 10 ,3, 2, 6};
+  BucketSort bs(11);
+  bs.sort(datas7);
+  cout << bs.isSorted(datas7) << endl;
+  bs.show(datas7);
 
   return 0;
 }
