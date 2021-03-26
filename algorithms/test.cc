@@ -4,6 +4,10 @@
 #include "SelectionSort.h"
 #include "ShellSort.h"
 #include "MergeSort.h"
+#include "PriorityQueue.h"
+#include "AlgUtil.h"
+#include "HeapSort.h"
+#include "BucketSort.h"
 
 using namespace std;
 int main()
@@ -42,5 +46,34 @@ int main()
   ms.sort(datas4);
   cout << ms.isSorted(datas4) << endl;
   ms.show(datas4);
+
+
+  PriorityQueue<IntComparable> pq;
+  vector<IntComparable> datas5 = {2, 2, 1, 1, 3, 3, 10 ,3, 2, 6};
+  vector<IntComparable>::iterator iter = datas5.begin();
+  while (iter != datas5.end())
+  {
+    pq.insert(*iter);
+    if (pq.size() > 5)
+      cout << "Delete Max: " << pq.delMax() << endl;
+    iter++;
+  }
+  vector<IntComparable> show_vector;
+  while (!pq.empty()) show_vector.push_back(pq.delMax());
+  show<IntComparable>(show_vector);
+
+
+  vector<IntComparable> datas6 = {2, 2, 1, 1, 3, 3, 10 ,3, 2, 6};
+  HeapSort hs;
+  hs.sort(datas6);
+  cout << hs.isSorted(datas6) << endl;
+  hs.show(datas6);
+
+  vector<IntComparable> datas7 = {2, 2, 1, 1, 3, 3, 10 ,3, 2, 6};
+  BucketSort bs(11);
+  bs.sort(datas7);
+  cout << bs.isSorted(datas7) << endl;
+  bs.show(datas7);
+
   return 0;
 }
