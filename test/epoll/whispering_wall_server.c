@@ -84,16 +84,16 @@ int main(int argc, char* argv[])
         {
           printf("get : %s\n", buf[i]);
           ev.data.fd = events[i].data.fd;
-5o          ev.events = EPOLLOUT | EPOLLET;
+          ev.events = EPOLLOUT | EPOLLET;
           epoll_ctl(epfd, EPOLL_CTL_MOD, events[i].data.fd, &ev);
         }
         else
         {
           // len == 0
           printf("Client closed\n");
-          ev.data.fd = events[i].data.fd;
-          ev.events = EPOLLIN;
-          epoll_ctl(epfd, EPOLL_CTL_DEL, events[i].data.fd, &ev);
+          /* ev.data.fd = events[i].data.fd; */
+          /* ev.events = EPOLLIN | EPOLLET; */
+          epoll_ctl(epfd, EPOLL_CTL_DEL, events[i].data.fd, 0);
           close(events[i].data.fd);
         }
       }
