@@ -139,6 +139,18 @@ TEST(LEETCODE, threeSumClosest)
   EXPECT_EQ(2, lc.threeSumClosest(nums, target));
 }
 
+TEST(LEETCODE, singleNumber)
+{
+  Leetcode lc;
+  vector<int> nums;
+  int target;
+
+  nums = {2, 2, 1, -4, -4};
+  EXPECT_EQ(1, lc.singleNumber(nums));
+
+  nums = {4,1,2,1,2};
+  EXPECT_EQ(4, lc.singleNumber(nums));
+}
 
 // ====
 int main(int argc, char **argv){
