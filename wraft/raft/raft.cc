@@ -9,8 +9,6 @@
 #include <unistd.h>
 
 
-
-#define EPOLL_WAIT_MAX_DEFAULT_SIZE (7)
 #define RAFT_DEFAUT_PORT (5556)
 #define SOCKET_LISTEN_MAX_BACKLOG (7)
 
@@ -27,20 +25,24 @@ void raft_option_init(raft_option_s *opt)
 void raft_thrd_main_info_init(raft_thrd_main_info_s *info)
 {
   info->running = false;
-  info->stop = true;
+  info->stop = false;
   info->raft_server = NULL;
 }
 
-void raft_sock_s_init(raft_sock_s *raft_sock)
+void raft_sock_init(raft_sock_s *raft_sock)
 {
   raft_sock->fd = 0;
 }
 
+void raft_ep_option_init(raft_ep_option_s *ep_option)
+{
+  memset(ep_option, 0, sizeof(raft_ep_option_s));
+}
+
 RaftServer::RaftServer()
-  : __epfd(0),
-    __listenfd(0)
 {
   raft_option_init(&__option);
+  raft_ep_option_init(&__ep_option);
   raft_thrd_main_info_init(&__info);
 }
 
@@ -78,25 +80,25 @@ int RaftServer::creat_ep_listen()
   saddr.sin_addr.s_addr = inet_addr(__option.host_ipv4.c_str());
   saddr.sin_port = htons(__option.port);
 
-  if ((__listenfd = socket(AF_INET, SOCK_STREAM, 0)) > 0 &&
-      bind(__listenfd, (struct sockaddr*)&saddr, sizeof(struct sockaddr_in))
-      == 0 &&
-      listen(__listenfd, SOCKET_LISTEN_MAX_BACKLOG) == 0 &&
-      (__epfd = epoll_create(EPOLL_WAIT_MAX_DEFAULT_SIZE)) > 0 &&
-      wepoll_add(__epfd, __listenfd, EPOLLIN | EPOLLET) == 0)
+  if ((__ep_option.listenfd = socket(AF_INET, SOCK_STREAM, 0)) > 0 &&
+      bind(__ep_option.listenfd,
+	   (struct sockaddr*)&saddr, sizeof(struct sockaddr_in)) == 0 &&
+      listen(__ep_option.listenfd, SOCKET_LISTEN_MAX_BACKLOG) == 0 &&
+      (__ep_option.epfd = wepoll_create(EPOLL_WAIT_MAX_DEFAULT_SIZE)) > 0 &&
+      wepoll_add(__ep_option.epfd, __ep_option.listenfd, EPOLLIN | EPOLLET) == 0)
   {
     return 0;
   }
       
-  if (__epfd != 0)
+  if (__ep_option.epfd != 0)
   {
-    close(__epfd);
-    __epfd = 0;
+    close(__ep_option.epfd);
+    __ep_option.epfd = 0;
   }
-  if (__listenfd != 0)
+  if (__ep_option.listenfd != 0)
   {
-    close(__listenfd);
-    __listenfd = 0;
+    close(__ep_option.listenfd);
+    __ep_option.listenfd = 0;
   }
   return -1;
 }
@@ -104,14 +106,14 @@ int RaftServer::creat_ep_listen()
 int RaftServer::destroy_ep_listen()
 {
   int ret = 0, tmp = 0;
-  if (__epfd != 0 && (tmp = close(__epfd)) == 0)
+  if (__ep_option.epfd != 0 && (tmp = close(__ep_option.epfd)) == 0)
   {
-    __epfd = 0;
+    __ep_option.epfd = 0;
   }
   ret |= tmp;
-  if (__listenfd != 0 && (tmp = close(__listenfd)) == 0)
+  if (__ep_option.listenfd != 0 && (tmp = close(__ep_option.listenfd)) == 0)
   {
-    __listenfd = 0;
+    __ep_option.listenfd = 0;
   }
   ret |= tmp;
   return ret == 0 ? 0 : -1;
@@ -162,4 +164,14 @@ int RaftServer::server_accept_async()
 void RaftServer::add_raft_sock(const raft_sock_s &raft_sock)
 {
   __raft_sock_list.push_back(raft_sock);
+}
+
+raft_thrd_main_info_s& RaftServer::get_thrd_info()
+{
+  return __info;
+}
+
+const raft_ep_option_s& RaftServer::get_ep_option() const
+{
+  return __ep_option; 
 }

@@ -74,6 +74,7 @@ struct raft_option_struct
 typedef struct raft_option_struct raft_option_s;
 void raft_option_init(raft_option_s *opt);
 
+#define EPOLL_WAIT_MAX_DEFAULT_SIZE (7)
 
 class RaftServer;
 struct raft_thrd_main_info_struct
@@ -91,7 +92,15 @@ struct raft_sock_struct
   int fd;
 };
 typedef struct raft_sock_struct raft_sock_s;
-void raft_sock_s_init(raft_sock_s *raft_sock);
+void raft_sock_init(raft_sock_s *raft_sock);
+
+struct raft_ep_option_struct
+{
+  int epfd;
+  int listenfd;
+};
+typedef struct raft_ep_option_struct raft_ep_option_s;
+void raft_ep_option_init(raft_ep_option_s *ep_option);
 
 class RaftServer : public Consenuse,
 		   public Log,
@@ -99,8 +108,7 @@ class RaftServer : public Consenuse,
 {
  private:
   raft_option_s __option;
-  int __epfd;
-  int __listenfd;
+  raft_ep_option_s __ep_option;
   raft_thrd_main_info_s __info;
   std::list<raft_sock_s> __raft_sock_list;
  public:
@@ -125,8 +133,8 @@ class RaftServer : public Consenuse,
   int destroy_raft_sockets();
  public:
   void add_raft_sock(const raft_sock_s &raft_sock);
-  // int raft_sock_
+  raft_thrd_main_info_s& get_thrd_info();
+  const raft_ep_option_s& get_ep_option() const;
 };
-
 }
 #endif // __RAFT_H__
