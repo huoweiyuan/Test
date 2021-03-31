@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <vector>
 #include <list>
-
+#include <string>
 #include "type.h"
 
 namespace wyhuo
@@ -57,26 +57,44 @@ class StateMachine
   ~StateMachine();
   int init(int64_t election_timeout_ms);
  public:
-  role role() const;
+  role get_role() const;
 };
 
 
 struct raft_option_struct
 {
   int64_t election_timeout_ms;
+
+  // listen port for other raft node
+  // Default value: 25567.
   int port;
+
+  std::string host_ipv4;
 };
-typedef raft_option_struct raft_option_s;
+typedef struct raft_option_struct raft_option_s;
+void raft_option_init(raft_option_s *opt);
+
+
+class RaftServer;
+struct raft_thrd_main_info_struct
+{
+  pthread_t thrd_id;
+  bool running;
+  bool stop;
+  RaftServer *raft_server;
+};
+typedef struct raft_thrd_main_info_struct raft_thrd_main_info_s;
+void raft_thrd_main_info_init(raft_thrd_main_info_s *info);
 
 class RaftServer : public Consenuse,
 		   public Log,
 		   public StateMachine
 {
  private:
-  // listen port for other raft node
-  // Default value: 25567.
-  int __port;
-
+  raft_option_s __option;
+  int __epfd;
+  int __listenfd;
+  raft_thrd_main_info_s __info;
  public:
   RaftServer();
   ~RaftServer();
@@ -84,12 +102,11 @@ class RaftServer : public Consenuse,
   int init(const raft_option_s&);
   int start();
  private:
-  // Start listen port
-  // int start_server();
   // Accept connection in asynchronous way
-  int raft_server_accept_async();
-  // 
-  
+  int server_accept_async();
+  int creat_ep_listen();
+  // thread main
+  int creat_thrd_main();
 };
 
 }

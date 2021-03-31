@@ -1,6 +1,6 @@
 #ifndef __WEPOLL_H__
 #define __WEPOLL_H__
-
+#include <sys/epoll.h>
 #include <stdint.h>
 
 int wepoll_add(int epfd, int sockfd, uint32_t events);
