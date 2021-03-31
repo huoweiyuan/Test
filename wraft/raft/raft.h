@@ -86,6 +86,13 @@ struct raft_thrd_main_info_struct
 typedef struct raft_thrd_main_info_struct raft_thrd_main_info_s;
 void raft_thrd_main_info_init(raft_thrd_main_info_s *info);
 
+struct raft_sock_struct
+{
+  int fd;
+};
+typedef struct raft_sock_struct raft_sock_s;
+void raft_sock_s_init(raft_sock_s *raft_sock);
+
 class RaftServer : public Consenuse,
 		   public Log,
 		   public StateMachine
@@ -95,18 +102,30 @@ class RaftServer : public Consenuse,
   int __epfd;
   int __listenfd;
   raft_thrd_main_info_s __info;
+  std::list<raft_sock_s> __raft_sock_list;
  public:
   RaftServer();
   ~RaftServer();
  public:
   int init(const raft_option_s&);
   int start();
+  int stop();
  private:
   // Accept connection in asynchronous way
   int server_accept_async();
+
   int creat_ep_listen();
+  int destroy_ep_listen();
+  
   // thread main
   int creat_thrd_main();
+  int destroy_thrd_main();
+
+  // disconnect all sock
+  int destroy_raft_sockets();
+ public:
+  void add_raft_sock(const raft_sock_s &raft_sock);
+  // int raft_sock_
 };
 
 }

@@ -10,7 +10,6 @@ struct wthrd_attr_arg_s
   void*(*thrd_func)(void*);
   void *arg;
 };
-// typedef struct wthrd_attr_arg_struct wthrd_attr_arg_s;
 
 void wthrd_attr_arg_init(struct wthrd_attr_arg_s *attr_arg);
 int wthrd_create(pthread_t *thrd_id, const struct wthrd_attr_arg_s *attr_arg);

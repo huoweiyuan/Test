@@ -15,6 +15,7 @@
 #define SOCKET_LISTEN_MAX_BACKLOG (7)
 
 using namespace wyhuo;
+using std::list;
 
 void raft_option_init(raft_option_s *opt)
 {
@@ -26,8 +27,13 @@ void raft_option_init(raft_option_s *opt)
 void raft_thrd_main_info_init(raft_thrd_main_info_s *info)
 {
   info->running = false;
-  info->stop = false;
+  info->stop = true;
   info->raft_server = NULL;
+}
+
+void raft_sock_s_init(raft_sock_s *raft_sock)
+{
+  raft_sock->fd = 0;
 }
 
 RaftServer::RaftServer()
@@ -56,6 +62,13 @@ int RaftServer::start()
   return r;
 }
 
+int RaftServer::stop()
+{
+  return (destroy_raft_sockets() |
+	  destroy_thrd_main() |
+	  destroy_ep_listen());
+}
+
 int RaftServer::creat_ep_listen()
 {
   struct sockaddr_in saddr;
@@ -65,34 +78,16 @@ int RaftServer::creat_ep_listen()
   saddr.sin_addr.s_addr = inet_addr(__option.host_ipv4.c_str());
   saddr.sin_port = htons(__option.port);
 
-  if ((__listenfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+  if ((__listenfd = socket(AF_INET, SOCK_STREAM, 0)) > 0 &&
+      bind(__listenfd, (struct sockaddr*)&saddr, sizeof(struct sockaddr_in))
+      == 0 &&
+      listen(__listenfd, SOCKET_LISTEN_MAX_BACKLOG) == 0 &&
+      (__epfd = epoll_create(EPOLL_WAIT_MAX_DEFAULT_SIZE)) > 0 &&
+      wepoll_add(__epfd, __listenfd, EPOLLIN | EPOLLET) == 0)
   {
-    goto err_lab;
+    return 0;
   }
       
-  if (bind(__listenfd, (struct sockaddr*)&saddr, sizeof(struct sockaddr_in)) != 0)
-  {
-    goto err_lab;
-  }
-
-  if (listen(__listenfd, SOCKET_LISTEN_MAX_BACKLOG) != 0)
-  {
-    goto err_lab;
-  }
-
-  if ((__epfd = epoll_create(EPOLL_WAIT_MAX_DEFAULT_SIZE)) < 0)
-  {
-    goto err_lab;
-  }
-
-  if (wepoll_add(__epfd, __listenfd, EPOLLIN | EPOLLET) != 0)
-  {
-    goto err_lab;
-  }
-
-  return 0;
-
- err_lab:
   if (__epfd != 0)
   {
     close(__epfd);
@@ -104,6 +99,22 @@ int RaftServer::creat_ep_listen()
     __listenfd = 0;
   }
   return -1;
+}
+
+int RaftServer::destroy_ep_listen()
+{
+  int ret = 0, tmp = 0;
+  if (__epfd != 0 && (tmp = close(__epfd)) == 0)
+  {
+    __epfd = 0;
+  }
+  ret |= tmp;
+  if (__listenfd != 0 && (tmp = close(__listenfd)) == 0)
+  {
+    __listenfd = 0;
+  }
+  ret |= tmp;
+  return ret == 0 ? 0 : -1;
 }
 
 int RaftServer::creat_thrd_main()
@@ -122,10 +133,33 @@ int RaftServer::creat_thrd_main()
   return 0;
 }
 
+int RaftServer::destroy_thrd_main()
+{
+  if (__info.running == true) __info.stop = true;
+  void *ret;
+  return wthrd_join(__info.thrd_id, &ret);
+}
+
+int RaftServer::destroy_raft_sockets()
+{
+  for (list<raft_sock_s>::iterator iter = __raft_sock_list.begin();
+       iter != __raft_sock_list.end();
+       ++iter)
+  {
+    close((*iter).fd);
+  }
+  __raft_sock_list.clear();
+}
+
 
 int RaftServer::server_accept_async()
 {
   if (creat_ep_listen() != 0 &&
       creat_thrd_main() != 0) return -1;
   return 0;
+}
+
+void RaftServer::add_raft_sock(const raft_sock_s &raft_sock)
+{
+  __raft_sock_list.push_back(raft_sock);
 }
