@@ -1,0 +1,2 @@
+OBJECT = main.o 
+Counting :

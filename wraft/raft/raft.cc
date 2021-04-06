@@ -14,6 +14,8 @@
 
 using namespace wyhuo;
 using std::list;
+using std::vector;
+using std::pair;
 
 void raft_option_init(raft_option_s *opt)
 {
@@ -48,7 +50,7 @@ RaftServer::RaftServer()
 
 RaftServer::~RaftServer()
 {
-  
+
 }
 
 int RaftServer::init(const raft_option_s &option)
@@ -67,8 +69,8 @@ int RaftServer::start()
 int RaftServer::stop()
 {
   return (destroy_raft_sockets() |
-	  destroy_thrd_main() |
-	  destroy_ep_listen());
+          destroy_thrd_main() |
+          destroy_ep_listen());
 }
 
 int RaftServer::creat_ep_listen()
@@ -82,14 +84,15 @@ int RaftServer::creat_ep_listen()
 
   if ((__ep_option.listenfd = socket(AF_INET, SOCK_STREAM, 0)) > 0 &&
       bind(__ep_option.listenfd,
-	   (struct sockaddr*)&saddr, sizeof(struct sockaddr_in)) == 0 &&
+           (struct sockaddr*)&saddr, sizeof(struct sockaddr_in)) == 0 &&
       listen(__ep_option.listenfd, SOCKET_LISTEN_MAX_BACKLOG) == 0 &&
       (__ep_option.epfd = wepoll_create(EPOLL_WAIT_MAX_DEFAULT_SIZE)) > 0 &&
-      wepoll_add(__ep_option.epfd, __ep_option.listenfd, EPOLLIN | EPOLLET) == 0)
+      wepoll_add(__ep_option.epfd, __ep_option.listenfd, EPOLLIN | EPOLLET) == 0
+      )
   {
     return 0;
   }
-      
+
   if (__ep_option.epfd != 0)
   {
     close(__ep_option.epfd);
@@ -121,17 +124,15 @@ int RaftServer::destroy_ep_listen()
 
 int RaftServer::creat_thrd_main()
 {
-  pthread_t thrd_id;
   wthrd_attr_arg_s attr_arg;
   wthrd_attr_arg_init(&attr_arg);
 
   // set options
   __info.raft_server = this;
-  attr_arg.thrd_func = thrd_recv;
+  attr_arg.thrd_func = thrd_main;
   attr_arg.arg = static_cast<void*>(&__info);
-  
-  if (wthrd_create(&thrd_id, &attr_arg) != 0) return -1;
-  __info.thrd_id = thrd_id;
+
+  if (wthrd_create(&(__info.thrd_id), &attr_arg) != 0) return -1;
   return 0;
 }
 
@@ -173,5 +174,45 @@ raft_thrd_main_info_s& RaftServer::get_thrd_info()
 
 const raft_ep_option_s& RaftServer::get_ep_option() const
 {
-  return __ep_option; 
+  return __ep_option;
+}
+
+ep_event_wish RaftServer::parse_block(int fd,
+                                      const uchar *block, uint block_len)
+{
+  // TODO: process recv event
+  return epno;
+}
+
+void NodeBlock::build_block(int fd, vector<uchar> &block)
+{
+  pair<ep_event_wish, vector<uchar> > &item = __write_cache[fd];
+  block = item.second;
+}
+
+ep_event_wish NodeBlock::write_done(int fd)
+{
+  pair<ep_event_wish, vector<uchar> > &item = __write_cache[fd];
+  __write_cache.erase(fd);
+  ep_event_wish ret = item.first;
+  return ret;
+}
+
+
+int Consenuse::creat_thrd_consenuse()
+{
+  wthrd_attr_arg_s attr_arg;
+  wthrd_attr_arg_init(&attr_arg);
+
+  attr_arg.thrd_func = thrd_consenuse;
+  __info.consenuse = this;
+  attr_arg.arg = static_cast<void*>(&__info);
+  if (wthrd_create(&(__info.thrd_id), &attr_arg) != 0) return -1;
+  return 0;
+}
+
+
+int Consenuse::destroy_thrd_consenuse()
+{
+  return 0;
 }

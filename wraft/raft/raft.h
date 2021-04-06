@@ -4,11 +4,32 @@
 #include <stdint.h>
 #include <vector>
 #include <list>
+#include <map>
 #include <string>
 #include "type.h"
 
 namespace wyhuo
 {
+
+struct raft_node_list_struct
+{
+  int fd;
+};
+typedef struct raft_node_list_struct raft_node_list_s;
+
+class Consenuse;
+struct consenuse_thrd_info_struct
+{
+  pthread_t thrd_id;
+  bool running;
+  bool stop;
+  Consenuse *consenuse;
+};
+typedef struct consenuse_thrd_info_struct consenuse_thrd_info_s;
+void consenuse_thrd_info_init(consenuse_thrd_info_s *info);
+
+
+enum role {follower, candidate, leader};
 class Consenuse
 {
  private:
@@ -16,12 +37,31 @@ class Consenuse
   // This node is in |__leader_item| item.
   // Default value: 0
   int64_t __current_item;
+  // nodes info
+  // <nodeid, node_info>
+  std::map<int, raft_node_list_s> __node_list_map;
+
+  // A follower will become a candidate if the waiting time is over
+  // __election_timeout_ms.
+  // Default value: 500 ms.
+  int64_t __election_timeout_ms;
+
+  // StateMachine's role.
+  // Default value: follower.
+  role __role;
+
+  // conseuse thread info
+  consenuse_thrd_info_s __info;
+
  public:
   Consenuse();
   ~Consenuse();
   int init();
  public:
-
+  void redirect();
+  int creat_thrd_consenuse();
+  int destroy_thrd_consenuse();
+  role get_role() const;
 };
 
 struct log_entry_struct
@@ -39,25 +79,34 @@ class Log
   std::list<log_entry_s*> __log;
 };
 
-enum role {follower, candidate, leader};
+
 class StateMachine
 {
  private:
-  // A follower will become a candidate if the waiting time is over
-  // __election_timeout_ms.
-  // Default value: 500 ms.
-  int64_t __election_timeout_ms;
-  
 
-  // StateMachine's role.
-  // Default value: follower.
-  role __role;
+
  public:
   StateMachine();
   ~StateMachine();
   int init(int64_t election_timeout_ms);
  public:
-  role get_role() const;
+
+};
+
+
+enum ep_event_wish {epno, epdel, epin, epout, epinout};
+class NodeBlock
+{
+ private:
+  // fd |int|, block |std::vector<uchar>|
+  std::map<int, std::pair<ep_event_wish, std::vector<uchar> > > __write_cache;
+ public:
+  virtual ~NodeBlock() {}
+ public:
+  virtual ep_event_wish parse_block(int fd, const uchar *block,
+                                    uint block_len) = 0;
+  void build_block(int fd, std::vector<uchar> &block);
+  ep_event_wish write_done(int fd);
 };
 
 
@@ -103,8 +152,9 @@ typedef struct raft_ep_option_struct raft_ep_option_s;
 void raft_ep_option_init(raft_ep_option_s *ep_option);
 
 class RaftServer : public Consenuse,
-		   public Log,
-		   public StateMachine
+                   public Log,
+                   public StateMachine,
+                   public NodeBlock
 {
  private:
   raft_option_s __option;
@@ -124,7 +174,7 @@ class RaftServer : public Consenuse,
 
   int creat_ep_listen();
   int destroy_ep_listen();
-  
+
   // thread main
   int creat_thrd_main();
   int destroy_thrd_main();
@@ -135,6 +185,9 @@ class RaftServer : public Consenuse,
   void add_raft_sock(const raft_sock_s &raft_sock);
   raft_thrd_main_info_s& get_thrd_info();
   const raft_ep_option_s& get_ep_option() const;
+
+ public:
+  ep_event_wish parse_block(int fd, const uchar *block, uint block_len);
 };
 }
 #endif // __RAFT_H__
