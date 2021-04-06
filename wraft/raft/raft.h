@@ -30,6 +30,17 @@ void consenuse_thrd_info_init(consenuse_thrd_info_s *info);
 
 
 enum role {follower, candidate, leader};
+struct consenuse_timeout_struct
+{
+  // A follower will become a candidate if the waiting time is over
+  // __start_election_timeout_ms.
+  // Default value: 500 ms.
+  int64_t __start_election_timeout_ms;
+
+  // last time get message from leader or candidate
+  int64_t __start_election_reset_time_ms;
+};
+typedef struct consenuse_timeout_struct consenuse_timeout_s;
 class Consenuse
 {
  private:
@@ -41,17 +52,14 @@ class Consenuse
   // <nodeid, node_info>
   std::map<int, raft_node_list_s> __node_list_map;
 
-  // A follower will become a candidate if the waiting time is over
-  // __election_timeout_ms.
-  // Default value: 500 ms.
-  int64_t __election_timeout_ms;
-
   // StateMachine's role.
   // Default value: follower.
   role __role;
 
   // conseuse thread info
   consenuse_thrd_info_s __info;
+
+  consenuse_timeout_s __timeout_opt;
 
  public:
   Consenuse();
@@ -61,7 +69,9 @@ class Consenuse
   void redirect();
   int creat_thrd_consenuse();
   int destroy_thrd_consenuse();
+ public:
   role get_role() const;
+  const consenuse_timeout_s& timeout_opt() const;
 };
 
 struct log_entry_struct

@@ -216,3 +216,8 @@ int Consenuse::destroy_thrd_consenuse()
 {
   return 0;
 }
+
+const consenuse_timeout_s& Consenuse::timeout_opt() const
+{
+  return __timeout_opt;
+}

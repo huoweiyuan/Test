@@ -3,6 +3,7 @@
 #include "wepoll.h"
 #include "type.h"
 #include "byte_order.h"
+#include "wtime.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -361,11 +362,34 @@ void* thrd_main(void *ptr)
 }
 
 
+
+
 void timer_process(wyhuo::Consenuse *consenuse)
 {
+  const wyhuo::consenuse_timeout_s &timeout_opt = consenuse->timeout_opt();
   switch (consenuse->get_role())
   {
+  case wyhuo::leader:
+  {
+    // TODO: ping
+    break;
+  }
+  case wyhuo::candidate:
+  {
+    // TODO: request vote. start a election
+    break;
+  }
+  default: // follower
+  {
+    // TODO: time out to be candidate
+    mstime_t now_ms = mstime();
+    if ((now_ms - timeout_opt.__start_election_reset_time_ms) >
+        timeout_opt.__start_election_timeout_ms)
+    {
+      
+    }
     
+  }
   }
 }
 
