@@ -59,6 +59,7 @@ int RaftServer::init(const raft_option_s &option)
   __option = option;
   Consenuse::init();
   StateMachine::init(__option.election_timeout_ms);
+  return 0;
 }
 
 int RaftServer::start()
@@ -153,6 +154,7 @@ int RaftServer::destroy_raft_sockets()
     close((*iter).fd);
   }
   __raft_sock_list.clear();
+  return 0;
 }
 
 
