@@ -7,9 +7,26 @@
 #include <map>
 #include <string>
 #include "type.h"
-
+#include "raft_blocks.h"
 namespace wyhuo
 {
+
+struct log_entry_struct
+{
+  uint64 __index;
+  uint64 __term_id;
+  std::vector<uchar> __data;
+};
+typedef struct log_entry_struct log_entry_s;
+
+class Log
+{
+ private:
+  // log entry store here in sequence index.
+  std::list<log_entry_s*> __log;
+  uint64 __current_term;
+  uint64 __current_index;
+};
 
 struct raft_node_list_struct
 {
@@ -28,7 +45,7 @@ struct consenuse_thrd_info_struct
 typedef struct consenuse_thrd_info_struct consenuse_thrd_info_s;
 void consenuse_thrd_info_init(consenuse_thrd_info_s *info);
 
-
+enum ep_event_wish {epno, epdel, epin, epout, epinout};
 enum role {follower, candidate, leader};
 struct consenuse_timeout_struct
 {
@@ -38,7 +55,7 @@ struct consenuse_timeout_struct
   int64_t __start_election_timeout_ms;
 
   // last time get message from leader or candidate
-  int64_t __start_election_reset_time_ms;
+  int64_t __start_election_time_reset_ms;
 };
 typedef struct consenuse_timeout_struct consenuse_timeout_s;
 class Consenuse
@@ -61,6 +78,10 @@ class Consenuse
 
   consenuse_timeout_s __timeout_opt;
 
+  uint64 __current_term;
+  uint64 __vote_for;
+
+
  public:
   Consenuse();
   ~Consenuse();
@@ -70,23 +91,12 @@ class Consenuse
   int creat_thrd_consenuse();
   int destroy_thrd_consenuse();
  public:
+  void set_role(role _role);
   role get_role() const;
   const consenuse_timeout_s& timeout_opt() const;
-};
-
-struct log_entry_struct
-{
-  int64_t __index;
-  int64_t __term_id;
-  std::vector<uchar> __data;
-};
-typedef struct log_entry_struct log_entry_s;
-
-class Log
-{
- private:
-  // log entry store here in sequence index.
-  std::list<log_entry_s*> __log;
+  void start_election_time_reset();
+  ep_event_wish process_appendentries(const raft_appendentries_s &append,
+                                      raft_appendentries_r_s &append_r);
 };
 
 
@@ -104,7 +114,6 @@ class StateMachine
 };
 
 
-enum ep_event_wish {epno, epdel, epin, epout, epinout};
 class NodeBlock
 {
  private:
@@ -117,6 +126,9 @@ class NodeBlock
                                     uint block_len) = 0;
   void build_block(int fd, std::vector<uchar> &block);
   ep_event_wish write_done(int fd);
+
+ public:
+  // void parse_ping(const uchar *block, uint len, raft_ping_s &ping);
 };
 
 

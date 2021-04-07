@@ -2,6 +2,7 @@
 #include "raft_impl.h"
 #include "wepoll.h"
 #include "wthrd.h"
+#include "wtime.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -180,8 +181,32 @@ const raft_ep_option_s& RaftServer::get_ep_option() const
 ep_event_wish RaftServer::parse_block(int fd,
                                       const uchar *block, uint block_len)
 {
+  ep_event_wish ret;
   // TODO: process recv event
-  return epno;
+  switch (parse_raft_cmd_type(block))
+  {
+  case APPENDENTRIES:
+  {
+    raft_appendentries_s append;
+    raft_appendentries_init(&append);
+    parse_appendentries_block(append, block, block_len);
+    raft_appendentries_r_s append_r;
+    raft_appendentries_r_init(&append_r);
+    ret = process_appendentries(append, append_r);
+    break;
+  }
+  case APPENDENTRIES_R:
+  {
+    raft_appendentries_r_s append_r;
+    parse_appendentries_r_block(append_r, block, block_len);
+    break;
+  }
+  default:
+  {
+    break;
+  }
+  }
+  return ret;
 }
 
 void NodeBlock::build_block(int fd, vector<uchar> &block)
@@ -220,4 +245,36 @@ int Consenuse::destroy_thrd_consenuse()
 const consenuse_timeout_s& Consenuse::timeout_opt() const
 {
   return __timeout_opt;
+}
+
+void Consenuse::set_role(role _role)
+{
+  __role = _role;
+}
+
+role Consenuse::get_role() const
+{
+  return __role;
+}
+
+void Consenuse::start_election_time_reset()
+{
+  __timeout_opt.__start_election_time_reset_ms = mstime();
+}
+
+ep_event_wish
+Consenuse::process_appendentries(const raft_appendentries_s &append,
+                                 raft_appendentries_r_s &append_r)
+{
+  // TODO:
+  if (append.term < __current_term /*|| other*/)
+  {
+    raft_appendentries_r_set(&append_r, __current_term, 1); // set reply false
+  }
+  else
+  {
+    // TODO
+    raft_appendentries_r_set(&append_r, __current_term, 0); // set reply true
+  }
+  return epout;
 }

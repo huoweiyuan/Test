@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 typedef unsigned char uchar;
-typedef unsigned int uint;
+typedef uint32_t uint;
 
 typedef uint8_t uint8;
 typedef uint16_t uint16;

@@ -366,6 +366,8 @@ void* thrd_main(void *ptr)
 
 void timer_process(wyhuo::Consenuse *consenuse)
 {
+  // TODO: try to reconnect other node here
+
   const wyhuo::consenuse_timeout_s &timeout_opt = consenuse->timeout_opt();
   switch (consenuse->get_role())
   {
@@ -381,14 +383,13 @@ void timer_process(wyhuo::Consenuse *consenuse)
   }
   default: // follower
   {
-    // TODO: time out to be candidate
+    // TODO: time out to become candidate
     mstime_t now_ms = mstime();
-    if ((now_ms - timeout_opt.__start_election_reset_time_ms) >
+    if ((now_ms - timeout_opt.__start_election_time_reset_ms) >
         timeout_opt.__start_election_timeout_ms)
     {
-      
+      consenuse->set_role(wyhuo::candidate);
     }
-    
   }
   }
 }
