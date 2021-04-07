@@ -152,6 +152,18 @@ TEST(LEETCODE, singleNumber)
   EXPECT_EQ(4, lc.singleNumber(nums));
 }
 
+TEST(LEETCODE, removeElement)
+{
+  Leetcode lc;
+  vector<int> nums;
+
+  nums = {3,2,2,3};
+  EXPECT_EQ(2, lc.removeElement(nums, 3));
+
+  nums = {0,1,2,2,3,0,4,2};
+  EXPECT_EQ(5, lc.removeElement(nums, 2));
+}
+
 // ====
 int main(int argc, char **argv){
   ::testing::InitGoogleTest(&argc, argv);

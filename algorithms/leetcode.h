@@ -510,7 +510,7 @@ class Leetcode
    */
   vector<int> midprint(vector<int> tree)
   {
-    
+    return tree;  
   }
 
   /*
@@ -544,6 +544,28 @@ class Leetcode
      }
      return ret_val;
    }
+
+  bool search(vector<int> &nums, int target)
+  {
+    return false;
+  }
+
+  int removeElement(vector<int> &nums, int val)
+  {
+    int end = nums.size();
+    for (int begin = 0; begin < end; begin++)
+    {
+      if (nums[begin] == val)
+      {
+        int tmp = nums[end - 1];
+        nums[end - 1] = nums[begin];
+        nums[begin] = tmp;
+        end--;
+        begin--;
+      }
+    }
+    return end;
+  }
 
 };
 
