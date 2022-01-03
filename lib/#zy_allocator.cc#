@@ -1,0 +1,22 @@
+#include "zy_allocator.h"
+
+using namespace zy;
+
+Allocator::Allocator()
+{
+}
+
+Allocator::~Allocator()
+{}
+
+void* Allocator::alloc(size_t size)
+{
+  
+}
+
+void Allocator::free(void *ptr)
+{
+  
+}
+
+Allocator *g_allocator = new Allocator();
