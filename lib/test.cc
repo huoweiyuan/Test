@@ -34,15 +34,15 @@ class Test
   }
 };
 
+Allocator *g_allocator = new Allocator();
+
 int main()
 {
-  Allocator a;
-  int *t = (int*)a.alloc(sizeof(int));
-  a.free(t);
-  Test *t1 = g_new<Test, 2>(&a, 1);
-  g_delete(&a, t1);
+  Test *t1 = new Test[2];
+  delete [] t1;
 
-  Test *t2 = new Test[2];
-  delete [] t2;
+  Test *t2 = g_new<Test>(g_allocator, 1);
+  g_delete(g_allocator, t2);
+
   return 0;
 }
