@@ -54,10 +54,8 @@ class Allocator
 
 
  public:
-  Allocator() noexcept
-  {}
-  virtual ~Allocator() noexcept
-  {}
+  Allocator() noexcept = default;
+  virtual ~Allocator() noexcept = default;
 
   friend void* g_alloc(Allocator*, size_t);
   friend void* g_realloc(Allocator*, void*, size_t);
