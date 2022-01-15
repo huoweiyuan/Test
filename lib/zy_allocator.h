@@ -18,7 +18,7 @@ class Allocator
   const int READ_ALLOC_SIZE_OFFSET = -(ALLOC_HEAD_SIZE);
   const int READ_OBJ_NUM_OFFSET = -(OBJ_NUM_HEAD_SIZE);
 
- public:
+ private:
   void* alloc(std::size_t size);
   void free(void *ptr);
   template<typename C, size_t Num, typename... P>
@@ -30,6 +30,13 @@ class Allocator
  public:
   Allocator() noexcept;
   ~Allocator() noexcept;
+
+  friend void* g_alloc(Allocator*, size_t);
+  friend void g_free(Allocator*, void*);
+  template<typename C, size_t Num, typename... P>
+  friend C* g_new(Allocator*, P...);
+  template<typename C>
+  friend void g_delete(Allocator*,C*);
 };
 
 template<typename C, size_t Num,  typename... P>
