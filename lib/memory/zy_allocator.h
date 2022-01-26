@@ -2,7 +2,7 @@
 #define _ZY_ALLOCATOR_
 
 #include <cstddef>
-
+#include <utility>
 namespace zy
 {
 
@@ -12,14 +12,14 @@ class Allocator
   const int OBJ_NUM_HEAD_SIZE = sizeof(size_t);
   const int READ_OBJ_NUM_OFFSET = -(OBJ_NUM_HEAD_SIZE);
 
- private:
+ public:
   virtual void* alloc(std::size_t size) = 0;
   virtual void* realloc(void *ptr, size_t size) = 0;
   virtual void free(void *ptr) = 0;
 
- private:
+ public:
   template<typename C, size_t Num, typename... P>
-  C* create_obj(P... args)
+  C* create_obj(P&&... args)
   {
     const size_t _class_size = sizeof(C);
     void *_ptr = alloc(_class_size * Num + OBJ_NUM_HEAD_SIZE);
@@ -32,7 +32,7 @@ class Allocator
     C *_construct_ptr = static_cast<C*>(_ptr);
     for (size_t i = 0; i < Num; i++)
     {
-      new(_construct_ptr + i) C(args...);
+      new(_construct_ptr + i) C(std::forward<P>(args)...);
     }
     return _construct_ptr;
   }
@@ -57,13 +57,13 @@ class Allocator
   Allocator() noexcept = default;
   virtual ~Allocator() noexcept = default;
 
-  friend void* g_alloc(Allocator*, size_t);
-  friend void* g_realloc(Allocator*, void*, size_t);
-  friend void g_free(Allocator*, void*);
-  template<typename C, size_t Num, typename... P>
-  friend C* g_new(Allocator*, P...);
-  template<typename C>
-  friend void g_delete(Allocator*,C*);
+  // friend void* g_alloc(Allocator*, size_t);
+  // friend void* g_realloc(Allocator*, void*, size_t);
+  // friend void g_free(Allocator*, void*);
+  // template<typename C, size_t Num, typename... P>
+  // friend C* g_new(Allocator*, P...);
+  // template<typename C>
+  // friend void g_delete(Allocator*,C*);
 };
 
 inline void* g_alloc(Allocator *allocator, size_t size)
@@ -88,11 +88,11 @@ inline void g_free(Allocator *allocator, void *ptr)
 }
 
 template<typename C, size_t Num = 1, typename... P>
-C* g_new(Allocator *allocator, P... args)
+C* g_new(Allocator *allocator, P&&... args)
 {
   if (allocator == nullptr)
     return nullptr;
-  C *_ptr = allocator->create_obj<C, Num>(args...);
+  C *_ptr = allocator->create_obj<C, Num>(std::forward<P>(args)...);
   return _ptr;
 }
 
