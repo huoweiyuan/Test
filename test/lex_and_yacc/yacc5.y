@@ -12,11 +12,11 @@ void yyerror(const char *s)
   printf("[error] %s\n", s);
 }
 
-int main()
-{
-  yyparse();
-  return 0;
-}
+/* int main() */
+/* { */
+/*   yyparse(); */
+/*   return 0; */
+/* } */
 %}
 
 %token NUMBER TOKHEAT STATE TOKTARGET TOKTEMPERATURE
