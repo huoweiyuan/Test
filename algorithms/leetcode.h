@@ -595,8 +595,28 @@ class Leetcode
     除数不为 0。
     假设我们的环境只能存储 32 位有符号整数，其数值范围是 [−231,  231 − 1]。本题中，如果除法结果溢出，则返回 231 − 1。
   */
+  /*
   int divide(int dividend, int divisor) {
 
+  }
+  */
+
+  // 70
+  int climbStairs(int n) {
+    if (n == 0)
+    {
+      return 0;
+    }
+    else if (n == 1)
+    {
+      return 1;
+    }
+    else if (n == 2)
+    {
+      return 2;
+    }
+
+    return climbStairs(n - 1) + climbStairs(n - 2);
   }
 };
 

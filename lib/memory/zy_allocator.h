@@ -18,10 +18,10 @@ class Allocator
   virtual void free(void *ptr) = 0;
 
  public:
-  template<typename C, size_t Num, typename... P>
-  C* create_obj(P&&... args)
+  template<typename Class, size_t Num, typename... P>
+  Class* create_obj(P&&... args)
   {
-    const size_t _class_size = sizeof(C);
+    const size_t _class_size = sizeof(Class);
     void *_ptr = alloc(_class_size * Num + OBJ_NUM_HEAD_SIZE);
     if (_ptr == nullptr)
       return nullptr;
@@ -29,25 +29,25 @@ class Allocator
     *(static_cast<size_t*>(_ptr)) = Num;
     _ptr = static_cast<char*>(_ptr) + OBJ_NUM_HEAD_SIZE;
 
-    C *_construct_ptr = static_cast<C*>(_ptr);
+    Class *_construct_ptr = static_cast<Class*>(_ptr);
     for (size_t i = 0; i < Num; i++)
     {
-      new(_construct_ptr + i) C(std::forward<P>(args)...);
+      new(_construct_ptr + i) Class(std::forward<P>(args)...);
     }
     return _construct_ptr;
   }
 
-  template<typename C>
-  void delete_obj(C *ptr)
+  template<typename Class>
+  void delete_obj(Class *ptr)
   {
     if (ptr == nullptr)
       return;
     char *_alloc_ptr = reinterpret_cast<char*>(ptr) + READ_OBJ_NUM_OFFSET;
     const size_t _obj_num = *(reinterpret_cast<size_t*>(_alloc_ptr));
-    C *_destruct_ptr = ptr;
+    Class *_destruct_ptr = ptr;
     for (size_t i = 0; i < _obj_num; i++)
     {
-      (_destruct_ptr + i)->~C();
+      (_destruct_ptr + i)->~Class();
     }
     free(_alloc_ptr);
   }
@@ -60,10 +60,10 @@ class Allocator
   // friend void* g_alloc(Allocator*, size_t);
   // friend void* g_realloc(Allocator*, void*, size_t);
   // friend void g_free(Allocator*, void*);
-  // template<typename C, size_t Num, typename... P>
-  // friend C* g_new(Allocator*, P...);
-  // template<typename C>
-  // friend void g_delete(Allocator*,C*);
+  // template<typename Class, size_t Num, typename... P>
+  // friend Class* g_new(Allocator*, P...);
+  // template<typename Class>
+  // friend void g_delete(Allocator*,Class*);
 };
 
 inline void* g_alloc(Allocator *allocator, size_t size)
@@ -87,17 +87,17 @@ inline void g_free(Allocator *allocator, void *ptr)
   allocator->free(ptr);
 }
 
-template<typename C, size_t Num = 1, typename... P>
-C* g_new(Allocator *allocator, P&&... args)
+template<typename Class, size_t Num = 1, typename... P>
+Class* g_new(Allocator *allocator, P&&... args)
 {
   if (allocator == nullptr)
     return nullptr;
-  C *_ptr = allocator->create_obj<C, Num>(std::forward<P>(args)...);
+  Class *_ptr = allocator->create_obj<Class, Num>(std::forward<P>(args)...);
   return _ptr;
 }
 
-template<typename C>
-void g_delete(Allocator *allocator, C *ptr)
+template<typename Class>
+void g_delete(Allocator *allocator, Class *ptr)
 {
   if (allocator == nullptr || ptr == nullptr)
     return;

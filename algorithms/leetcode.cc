@@ -164,6 +164,12 @@ TEST(LEETCODE, removeElement)
   EXPECT_EQ(5, lc.removeElement(nums, 2));
 }
 
+TEST(LEETCODE, climbStairs)
+{
+  Leetcode lc;
+  EXPECT_EQ(1, lc.climbStairs(44));
+}
+
 // ====
 int main(int argc, char **argv){
   ::testing::InitGoogleTest(&argc, argv);
