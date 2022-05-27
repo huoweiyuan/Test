@@ -20,7 +20,7 @@ bool canJump(vector<int>& nums) {
 }
 
 
-TEST(LEETCODE, canJump) {
+TEST(LEETCODE, 55) {
   vector<int> test1 = {2,3,1,1,4};
   EXPECT_EQ(true, canJump(test1));
 

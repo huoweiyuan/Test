@@ -57,14 +57,14 @@ int rob(vector<int> &nums) {
   return result[2];
 }
 
-TEST(LEETCODE, 740_deleteAndEarn1) {
+TEST(LEETCODE, 740_1) {
   vector<int> nums = {3,4,2};
   EXPECT_EQ(6, deleteAndEarn1(nums));
   vector<int> nums1 = {2,2,3,3,3,4};
   EXPECT_EQ(9, deleteAndEarn1(nums1));
 }
 
-TEST(LEETCODE, 740_deleteAndEarn2) {
+TEST(LEETCODE, 740_2) {
   vector<int> nums = {3,4,2};
   EXPECT_EQ(6, deleteAndEarn1(nums));
   vector<int> nums1 = {2,2,3,3,3,4};
